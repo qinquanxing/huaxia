@@ -1,0 +1,182 @@
+{OVOV:include file="ovov_sys/ovoa_header.html"/}
+<body>
+<script language="javascript" type="text/javascript" src="rili/WdatePicker.js"></script>
+<script language="javascript" type="text/javascript">
+	function listBgOver(obj){
+		obj.style.background="#E8F4FF";
+	}
+	function listBgOut(obj){
+		obj.style.background="#FFFFFF";
+	}
+	
+function del(id){
+	//alert(id);
+	if(confirm('确定删除此用户？')){
+		location.href = 'user.php?action=do_del&id='+id;
+	}
+}
+function checkAll(){
+	for (var p=0;p<document.forms[1].elements.length;p++){
+		var m = document.forms[1].elements[p];
+			if (m.checked==false){
+				m.checked = true;
+			}
+			else{
+				m.checked = false;
+			}
+	}
+}
+function delAll(){
+	var string = "";
+	for (var i = 0 ; i<document.forms[1].elements.length ; i++){
+		if(document.forms[1].elements[i].checked !=""){
+			if(i<(document.forms[1].elements.length)){
+				string = string + document.forms[1].elements[i].value+",";
+			}else{
+				string = string + document.forms[1].elements[i].value;
+			}
+		}
+	}
+	if(string == ""){
+		//alert("请选择内容！");
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '请选择内容'
+               		});
+	}else{
+		//alert(string);
+		if(confirm('确定删除这些用户？')){location.href="user.php?action=do_del&id="+string;}
+	}
+	
+}
+
+	jQuery(function($) {
+		//消息提交
+		$("#msg_send_submit").click(function() {
+				if($("#news_title").val()=='') {
+					$("#news_title").addClass("s_sear_red");
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '消息标题不能为空!'
+               		});
+					$("#news_title").focus();
+					return false;
+				}
+				
+				//消息内容是否为空
+				if($("#news_content").val()==''){
+					$("#news_content").focus();
+					$("#news_content").attr("style","border:#F00 solid 1px;");
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '消息内容不能为空!'
+               		});
+					return false;
+				}
+
+ 				
+				
+			});
+		});
+</script>
+<div class="main">
+  <div class="main_title"><strong>消息中心</strong><span></span>
+    <p></p>
+  </div>
+  <div class="main_content">
+    <div class="sub_title">
+      <ul>
+	    <li {OVOV:if $claid eq 0/}class="tab_on"{OVOV:/if/}><a href="msg.php?action=msg_send&claid=0"><span>发送消息</span></a></li>
+        <li {OVOV:if $claid eq 1/}class="tab_on"{OVOV:/if/}><a href="msg.php?action=msg_list&claid=1&mid=1"><span>我的消息</span></a></li>
+        <li {OVOV:if $claid eq 2/}class="tab_on"{OVOV:/if/}><a href="msg.php?action=msg_list&claid=2&mid=2"><span>已发消息</span></a></li>
+        <li {OVOV:if $claid eq 3/}class="tab_on"{OVOV:/if/}><a href="msg.php?action=msg_list&claid=3&mid=0"><span>系统消息</span></a></li>
+      </ul>
+      <div class="search"><form action="msg.php?action=msg_chaxun&claid={OVOV:$claid/}" method="post" id="chaxun" name="chaxun" >
+        <p><input name="msg_sqlname" id="msg_sqlname"  type="text" value="{OVOV:$msg_sqlname/}" /></p><input name="msg_mid" id="msg_mid"  type="hidden" value="{OVOV:$mid/}" />
+        <span><INPUT class="but_sql" type=submit value=" " name="usr_sql_submit" id="usr_sql_submit"></span></form>
+      </div>
+    </div>
+  <!--发送消息b-->
+ 
+  <div class="contents" {OVOV:if $claid eq 0/}style="display:block"{OVOV:/if/}>
+    <div><form action="msg.php?action=do_msg_send" method="post" name="sendmsg" id="sendmsg" enctype="multipart/form-data">
+        <table width="100%" border="0" cellspacing="1" cellpadding="0" style="background:#d5dde0;" class="table_font">
+       		<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+		  	 <td height="32" align="center" width="10%">&nbsp;接 收 者：</td><input type="hidden" name="url_from" id="url_from" value="{OVOV:$url_from/}">
+             <td align="left" width="90%" >&nbsp;<SELECT id="receiver" name="receiver">{OVOV:if $qxid==1/}<OPTION selected value=0>所有会员(系统信息)</OPTION> {OVOV:/if/}{OVOV:foreach from=$user item=user/}<OPTION value={OVOV:$user.user_id/} {OVOV:if $uid eq $user.user_id/} selected="selected"{OVOV:/if/}>{OVOV:$user.user_ture_name/}({OVOV:$user.user_name/})</OPTION>{OVOV:/foreach/}</SELECT>&nbsp;<span class="xspan">*消息标题</span></td>
+			</tr>
+        	<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+		  	 <td height="32" align="center" width="10%">&nbsp;消息标题：</td>
+             <td align="left" width="90%" >&nbsp;<INPUT class="s_sear" type=text name="news_title" id="news_title">&nbsp;<span class="xspan">*消息标题</span></td>
+			</tr>
+             <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+		  	 <td height="32" align="center" width="10%">&nbsp;消息内容：</td>
+             <td align="left" width="90%" >&nbsp;<textarea class="textarea" name="news_content" id="news_content"></textarea>&nbsp;<span class="xspan">*消息内容</span></td>
+			</tr>
+             <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+		  	 <td height="32" align="center" width="10%">&nbsp;附件上传：</td>
+             <td align="left" width="90%" >&nbsp;<table><tr><td>&nbsp;<INPUT type=text name="news_files" id="news_files" class="u_input320" value="{OVOV:$user.user_photo/}" ></td><td><iframe name="file_upload" src="upload.php?action=new_ovoafile&isReturn=true&dizhi=news_files&rstform=sendmsg" scrolling="no" frameborder="0" id="upload_file_iframe" style="height:28px; padding-top:0px;"></iframe></td></tr></table></td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">   
+			<td height="32" align="center" width="10%">&nbsp;</td>       
+			<td align="left" width="90%" colspan="2">&nbsp;<INPUT class="but_add" type=submit value=" " name="msg_send_submit" id="msg_send_submit"></td>
+			</tr>
+		  </table>
+		  </form>
+	  </div>
+  </div>
+    <!--发送消息e-->
+   <!--我的消息b-->
+      <div class="contents" {OVOV:if $claid && $claid le 4/}style="display:block"{OVOV:/if/}><form name="usernamelist">
+      {OVOV:if $qx_id==1/}
+      <div> <a href="#" class="tabel_btn" onClick="checkAll();"><span></span>全选</a>&nbsp;&nbsp; <a href="#" class="tabel_btn" onClick="delAll();" ><span></span>批量删除</a>&nbsp;&nbsp; </div>{OVOV:/if/}
+      <div>
+        <table width="100%" border="0" cellspacing="1" cellpadding="0" style="background:#d5dde0;" class="table_font">
+          <tr style="background:url(common/skin/1/images/table_title.gif) repeat-x;">
+            <td height="32" align="center"><span>选择</span></td>
+                <td align="center">消息标题[点击标题查看详细]</td>
+                {OVOV:if $mid/}<td width="10%">消息状态</td>{OVOV:/if/}
+                <td align="center" {OVOV:if $mid==2/}style="display:none"{OVOV:/if/}>发送人</td>
+                <td align="center" {OVOV:if $qx_id>1 and $mid<>2/}style="display:none"{OVOV:/if/}>接收者</td>
+                <td align="center">时间</td>{OVOV:if $mid/}
+                <td align="center">操作</td>{OVOV:/if/}
+          </tr>
+         {OVOV:if $news/}
+         {OVOV:foreach from=$news item=news/}
+          <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+                    <td height="32" align="center">{OVOV:if $mid/}<input type="checkbox" name="nid" value="{OVOV:$news.id/}" /> {OVOV:/if/} </td>
+                 	<td  align="center" title="点击查看详细">{OVOV:if $news.mid/}<a href="msg.php?action=msg_detail&id={OVOV:$news.mid/}&mid={OVOV:$mid/}&claid=5">{OVOV:else/}<a href="msg.php?action=msg_detail&id={OVOV:$news.id/}&mid={OVOV:$mid/}&claid=5">{OVOV:/if/}{OVOV:$news.title/}</a></td>
+                	{OVOV:if $mid/}<td  align="center">{OVOV:$news.isread/}</td>{OVOV:/if/}
+                    <td align="center" {OVOV:if $mid==2/}style="display:none"{OVOV:/if/}><a href="msg.php?action=msg_send&uid={OVOV:$news.seid/}">{OVOV:$news.sendnmae/}</a></td>
+                    <td align="center" {OVOV:if $qx_id>1 and $mid<>2/}style="display:none"{OVOV:/if/}>{OVOV:$news.receiver/}</td>
+                    <td align="center">{OVOV:$news.time/}</td>
+                   {OVOV:if $mid/} <td align="center"><a onClick="{OVOV:if $mid==1/}del('{OVOV:$news.id/}'){OVOV:else/}del_x('{OVOV:$news.id/}'){OVOV:/if/}" href="#">删除</a></td>{OVOV:/if/}
+          </tr>
+          {OVOV:/foreach/}{OVOV:else/}
+           <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);"><td colspan="7" height="32" align="center">暂无任何消息！</td></tr>
+          {OVOV:/if/}
+        </table>
+      </div>
+     </form>
+    <div class="page">
+     <!-- <input name="" type="text" /><a href="#">跳转</a>--><span>第{OVOV:$page_now/}页/共{OVOV:$page_num/}页，共{OVOV:$total/}条</span> {OVOV:$pagelist/}</div>
+  </div>
+   <!--我的消息e-->
+   <!--查看详细消息b-->
+  <div class="contents" {OVOV:if $claid eq 5/}style="display:block"{OVOV:/if/}>
+  {OVOV:foreach from=$content item=content/}
+    <h1>{OVOV:$content.content/}</h1>
+    <p>{OVOV:$content.sname/} <font style="font-size:12px;color:#CCCCCC">发送时间:{OVOV:$content.time/}</font>{OVOV:if $content.news_files/}<br><br>附件下载：<a href="{OVOV:$content.news_files/}">{OVOV:$content.news_files/}</a>{OVOV:/if/}</p>
+    {OVOV:/foreach/}
+  </div>
+  <!--查看详细消息e-->
+</div>
+</div>
+</body>
+</html>

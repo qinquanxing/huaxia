@@ -1,0 +1,105 @@
+{OVOV:include file="ovov_sys/ovoa_header.html"/}
+<script type="text/javascript" src="../common/js/jquerys.js"></script>
+<script type="text/javascript" src="../common/js/calendar.js"></script>
+<script language="javascript" type="text/javascript" src="../common/rili/WdatePicker.js"></script>
+<script language="javascript" type="text/javascript">
+	function listBgOver(obj){
+		obj.style.background="#E8F4FF";
+	}
+	function listBgOut(obj){
+		obj.style.background="#FFFFFF";
+	}
+jQuery(function($) {
+		//提交
+		$("#submit").click(function() {
+				//广告名称不能为空
+				if($("#title").val()==''){
+					$("#title").focus();
+					$("#title").attr("style","border:#F00 solid 1px;");
+					//alert("真实姓名不能为空");
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '广告名称不能为空'
+               		});
+					return false;
+				}
+				//广告售价不能为空
+			});
+		});
+</script>
+
+<body>
+<div class="main">
+  <div class="main_title"><strong>添加广告订单</strong></div>
+  <div class="main_content">
+  <!--添加用户b-->
+  <div class="contents" style="display:block" >
+  <div>
+	    <form action="manage_ad.php?action=addrder" method="post" enctype="multipart/form-data" name="form1" id="form1">
+	     <table width="100%" border="0" cellspacing="1" cellpadding="0" class="table_font">
+		<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;所属广告位：</td>
+			<td align="left" width="90%" >&nbsp;<select name="adv_id">
+		  {OVOV:foreach item=item from=$adList/}
+		    <option value="{OVOV:$item.adv_id/}"{OVOV:if $item.adv_id eq $smarty.get.adv_id/} selected="selected"{OVOV:/if/}>{OVOV:$item.name/}</option>
+			{OVOV:/foreach/}
+		  </select>&nbsp;<span class="xspan">*所属广告位</span></td>
+		</tr>
+		<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;广告名称：</td>
+			<td align="left" width="90%" >&nbsp;<input name="title" type="text" id="title" class="s_sear" size="40"  />&nbsp;<span class="xspan">*广告名称</span></td>
+		</tr>
+		<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;广告类型：</td>
+			<td align="left" width="90%" >&nbsp;
+		   {OVOV:foreach key=key item=item from=$class/}
+			<input name="class" type="radio" value="{OVOV:$key/}"{OVOV:if $key eq 1/} checked="checked"{OVOV:/if/} />
+			{OVOV:$item/}
+			{OVOV:/foreach/}
+		  &nbsp;<span class="xspan">*广告类型</span></td>
+		</tr>
+	<!--<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;文字广告：</td>
+			<td align="left" width="90%" >&nbsp;<input name="text" type="text" id="text" class="s_sear" size="40" />&nbsp;<span class="xspan">文字广告</span></td>
+		</tr>-->
+		<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;图片广告：</td>
+			<td align="left" width="90%" >&nbsp;<input type="file" name="file"  />&nbsp;<span class="xspan">图片广告</span></td>
+		</tr>
+		<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;广告地址：</td>
+			<td align="left" width="90%" >&nbsp;<input name="url" type="text" id="url" class="s_sear" size="40" value="http://" />&nbsp;<span class="xspan">广告地址</span></td>
+		</tr>
+		<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;js广告：</td>
+			<td align="left" width="90%" >&nbsp;<textarea name="code" cols="40" rows="4"  id="code"></textarea>&nbsp;<span class="xspan">js广告</span></td>
+		</tr>	
+		 <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" style="display:none;">          
+			<td height="32" align="center" width="10%">&nbsp;价格：</td>
+			<td align="left" width="90%" >&nbsp;<input name="price" type="text" id="price" class="s_sear" size="10" />&nbsp;元/周<span class="xspan">价格</span></td>
+		</tr> 
+		<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;开始日期：</td>
+			<td align="left" width="90%" >&nbsp;<input name="start_date" type="text" id="start_date" value="{OVOV:$start_date/}" size="12" maxlength="10" onClick="WdatePicker()" class="Wdate" />&nbsp;结束日期&nbsp; <input name="stop_date" type="text" id="stop_date" value="{OVOV:$stop_date/}" size="12" maxlength="10" onClick="WdatePicker()" class="Wdate" />&nbsp;<span class="xspan">（日期格式: YYYY-M-D）</span></td>
+		</tr>
+		 <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" style="display:none;">          
+			<td height="32" align="center" width="10%">&nbsp;状态：</td>
+			<td align="left" width="90%" >&nbsp;<input type="radio" name="state" value="0" />待审核&nbsp;&nbsp;<input name="state" type="radio" value="1" checked="checked" />审核通过&nbsp;<span class="xspan">状态</span></td>
+		</tr> 
+		<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">   
+			<td height="32" align="center" width="10%">&nbsp;</td>       
+			<td align="left" width="90%" colspan="2">&nbsp;<INPUT class="but_add" type=submit value=" " name="submit" id="submit"></td>
+		</tr>
+	</table>
+	</form>
+	</div>
+  </div>
+   <!--添加用户e-->
+  <div class="fd zx"></div>
+  <div class="fd yx"></div>
+</div>
+</div>
+</body>
+</html>

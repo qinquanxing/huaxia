@@ -1,0 +1,70 @@
+{OVOV:include file="ovov_sys/ovoa_header.html"/}
+<script language="javascript" type="text/javascript" src="../common/rili/WdatePicker.js"></script>
+<link rel="stylesheet" href="../e/themes/default/default.css" />
+<link rel="stylesheet" href="../e/plugins/code/prettify.css" />
+<script charset="utf-8" src="../e/kindeditor.js"></script>
+<script charset="utf-8" src="../e/lang/zh_CN.js"></script>
+<script charset="utf-8" src="../e/plugins/code/prettify.js"></script>
+<script language="javascript" type="text/javascript">
+	function listBgOver(obj){
+		obj.style.background="#E8F4FF";
+	}
+	function listBgOut(obj){
+		obj.style.background="#FFFFFF";
+	}
+</script>
+<body>
+<div class="main">
+  <div class="main_title"><strong>广告订单列表</strong> <span></span><p></p></div>
+  <div class="main_content">
+  <!--文章管理b-->
+  <div class="contents" style="display:block">
+   <div>
+   <table width="100%" border="0" cellspacing="1" cellpadding="0" style="background:#d5dde0;" class="table_font">
+   <td colspan="7">浏览广告位&nbsp;
+<select name="adv_id" onChange="window.location.href='manage_ad.php?action=viewad&adid='+this.value">
+	<option value="-1">全部</option>
+  {OVOV:foreach item=item from=$adList/}
+    <option value="{OVOV:$item.adv_id/}"{OVOV:if $item.adv_id eq $smarty.get.adv_id/} selected="selected"{OVOV:/if/}>{OVOV:$item.name/}</option>
+	{OVOV:/foreach/}
+  </select>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="manage_ad.php?action=adlist">［广告位列表］</a>
+		</td> 
+		</table>
+		</div>	
+    <div><form name="channel_form"><table width="100%" border="0" cellspacing="1" cellpadding="0" style="background:#d5dde0;" class="table_font">  
+    <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" align="center">
+    <td height="32" align="center">ID</td>
+    <td align="center">订单名称</td>
+    <td align="center">所在广告位</td>
+<!--     <td align="center">点击次数</td>
+    <td align="center">展示次数</td>
+    <td align="center">状态</td>
+    <td align="center">起止日期</td> -->
+    <td align="center">操作</td>
+  </tr>
+   {OVOV:foreach item=item from=$list/}
+   <tr height="32" align="center" bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+    <td align="center">{OVOV:$item.order_id/}</td>
+    <td align="center">{OVOV:$item.title/}</td>
+    <td align="center">{OVOV:$item.name/}</td>
+<!--     <td align="center">{OVOV:$item.hits/} 次</td>
+    <td align="center">{OVOV:$item.show_times/} 次</td>
+    <td align="center">{OVOV:if $item.state eq 1/}审核通过{OVOV:else/}待审核{OVOV:/if/}</td>
+    <td align="center">
+	起:{OVOV:$item.start_date|date_format:"%Y/%m/%d"/}<br>
+	止:{OVOV:$item.stop_date|date_format:"%Y/%m/%d"/}	</td> -->
+    <td align="center"><a href="manage_ad.php?action=editrder&rderid={OVOV:$item.order_id/}">编辑</a>&nbsp;&nbsp;<a href="manage_ad.php?action=delrder&rderid={OVOV:$item.order_id/}" onClick="if(!confirm('确认删除?'))return false" style="color:red;">删除</a></td>
+  </tr>
+  {OVOV:/foreach/}
+  <tr height="32" align="center" bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+    <td colspan="8">{OVOV:$pageList/}</td>
+  </tr>
+</table>
+</form>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

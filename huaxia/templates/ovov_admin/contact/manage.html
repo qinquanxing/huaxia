@@ -1,0 +1,61 @@
+{OVOV:include file="ovov_sys/ovoa_header.html"/}
+<script src="common/rili/WdatePicker.js"></script>
+<script>
+	function listBgOver(obj){
+		obj.style.background="#E8F4FF";
+	}
+	function listBgOut(obj){
+		obj.style.background="#FFFFFF";
+	}
+	
+	function del(id){
+			art.dialog({
+			content: '您确定删除？',lock:true,
+			ok: function () {
+				location.href = 'contact.php?action=del&id='+id;
+			},
+		cancelVal: '关闭',
+		cancel: true //为true等价于function(){}
+		});
+		
+	}
+</script>
+<body>
+<div class="main">
+	<div class="main_title"><strong>联系方式管理</strong></div>
+	<div class="main_content">
+  		<div class="contents" style="display:block">
+    		<form name="channel_form"><table width="100%" border="0" cellspacing="1" cellpadding="0" style="background:#d5dde0;" class="table_font">
+				<tr style="background:url(common/skin/1/images/table_title.gif) repeat-x;" align="center">
+					<td height="32" align="center">ID</td>
+					<td>公司名称</td>
+					<td>联系电话</td>
+					<td>传真</td>
+					<td>显示顺序</td>
+					<td>添加时间</td>
+					<td>操作&nbsp;&nbsp;&nbsp;&nbsp; <a href="contact.php?action=add">添加</a></td>
+				</tr>
+{OVOV:if $res/}
+{OVOV:foreach from=$res item=res/}
+  				<tr height="32" align="center" bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+  					<td>{OVOV:$res.c_id/}</td>
+    				<td>{OVOV:$res.company_ch/}</td>
+    				<td>{OVOV:$res.telephone/}</td>
+    				<td>{OVOV:$res.fax/}</td>
+    				<td>{OVOV:$res.paixu/}</td>
+    				<td>{OVOV:$res.add_time/}</td>
+    				<td><a href="contact.php?action=edit&id={OVOV:$res.c_id/}">修改</a> <a href="javascript:void(0);" onclick="del({OVOV:$res.c_id/})">删除</a></td>
+				</tr>
+{OVOV:/foreach/}
+{OVOV:else/}
+				<tr height="32" align="center" bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+    				<td colspan="8" align="center">暂无内容</td>
+				</tr>
+{OVOV:/if/}	
+				</table>
+			</form>
+		</div>
+	</div>
+</div>
+</body>
+</html>

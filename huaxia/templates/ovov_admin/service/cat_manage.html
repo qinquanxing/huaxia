@@ -1,0 +1,123 @@
+{OVOV:include file="ovov_sys/ovoa_header.html"/}
+<script src="common/rili/WdatePicker.js"></script>
+<script>
+	function listBgOver(obj){
+		obj.style.background="#E8F4FF";
+	}
+	function listBgOut(obj){
+		obj.style.background="#FFFFFF";
+	}
+	
+	function del(id,type){
+		if(type==1){
+			msg = '删除该分类会同时删除分类下的二级分类和相应的商品，<br/>您确定要这么做吗？';
+		}else{
+			msg = '删除该分类会同时删除分类下的商品，您确定要这么做吗？';
+		}
+		art.dialog({
+			content: msg,lock:true,
+			ok: function () {
+				location.href = 'goods.php?action=cat_del&cat='+type+'&id='+id;
+			},
+			cancelVal: '关闭',
+			cancel: true //为true等价于function(){}
+		});
+	}
+	
+</script>
+<body>
+<div class="main">
+	
+{OVOV:include file='goods/cat_tab.html'/}
+  		<div class="contents" style="display:block">
+  			<form method="GET" action="goods.php">
+			<input type="hidden" value="cat" name="action">
+			<table class="table_font" width="100%" cellspacing="1" cellpadding="0" border="0" style="background:#d5dde0;">
+				<tr bgcolor="#FFFFFF" onmouseover="listBgOver(this);" onmouseout="listBgOut(this);" style="background: none repeat scroll 0% 0% rgb(255, 255, 255);">
+					<td width="10%" height="32" align="center"> 商品分类：</td>
+					<td width="" align="left">
+						&nbsp;
+						<select name="cat_opt">
+							<option value="">--请选择--</option>
+{OVOV:foreach from=$cat_opt item=cat_opt/}
+							<option value="{OVOV:$cat_opt.id/}" {OVOV:if $smarty.get.cat_opt eq $cat_opt.id/}selected{OVOV:/if/}> {OVOV:$cat_opt.cat_name/}</option>
+{OVOV:/foreach/}
+	    				</select>
+					</td>
+					<td width="" height="32" align="center"> 二级分类名称：</td>
+					<td width="" align="left">
+						&nbsp;<input type="text" name="cat_name" value="{OVOV:$smarty.get.cat_name/}" maxlength="30" class="s_sear"/>
+					</td>
+					<td align="center">
+						<input type="submit" style="height:25px" value="" class="but_sql">
+					</td>
+					
+				</tr>
+			</table>
+		</form>
+    	<br/>
+    		<form name="channel_form"><table width="100%" border="0" cellspacing="1" cellpadding="0" style="background:#d5dde0;" class="table_font">
+				<tr style="background:url(common/skin/1/images/table_title.gif) repeat-x;" align="center">
+					<td height="32" align="center">选择<!--ID--></td>
+					<td>分类名称</td>
+					<td>排序</td>
+					<td>描述</td>
+					<td>添加时间</td>
+					<td>操作&nbsp;&nbsp;&nbsp;&nbsp; <a href="goods.php?action=cat_add">添加</a></td>
+				</tr>
+{OVOV:if $lv1/}
+{OVOV:section loop=$lv1 name=lv1/}
+  				<tr height="32" align="center" bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+  					<td><!--<input type="checkbox" name="exam" value="{OVOV:$lv1[lv1].id/}" />-->{OVOV:$lv1[lv1].id/}</td>
+    				<td style="padding-left:20px; text-align:left"><img src="common/images/jiakk.png"> {OVOV:$lv1[lv1].cat_name/}</td>
+    				<td>{OVOV:$lv1[lv1].cat_sort/}</td>
+    				<td>{OVOV:$lv1[lv1].cat_desc|truncate:30:"...":true/}</td>
+    				<td>{OVOV:$lv1[lv1].addtime|date_format:"%Y-%m-%d %H:%M:%S"/}</td>
+    				<td>
+{OVOV:if $lv1[lv1].is_show/}
+						<a class="cz_btn" href="goods.php?action=hide_cat&id={OVOV:$lv1[lv1].id/}">隐藏</a> 
+{OVOV:else/}
+						<a class="cz_btn" href="goods.php?action=show_cat&cat=1&id={OVOV:$lv1[lv1].id/}">显示</a> 	
+{OVOV:/if/}
+    					<a class="cz_btn" href="goods.php?action=cat_edit&id={OVOV:$lv1[lv1].id/}">修改</a> 
+						<a class="cz_btn" href="javascript:void(0);" onclick="del({OVOV:$lv1[lv1].id/},1)">删除</a>
+					</td>
+				</tr>
+{OVOV:section loop=$lv2 name=lv2/}
+{OVOV:if $lv2[lv2].parent_id eq $lv1[lv1].id/}
+				<tr height="32" align="center" bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+  					<td><!--<input type="checkbox" name="exam" value="{OVOV:$lv2[lv2].id/}" />-->{OVOV:$lv2[lv2].id/}</td>
+    				<td style="padding-left:20px; text-align:left">
+						<font style="padding-left:20px;"> |-- {OVOV:$lv2[lv2].cat_name/}</font>
+					</td>
+    				<td>{OVOV:$lv2[lv2].cat_sort/}</td>
+    				<td>{OVOV:$lv2[lv2].cat_desc|truncate:30:"...":true/}</td>
+    				<td>{OVOV:$lv2[lv2].addtime|date_format:"%Y-%m-%d %H:%M:%S"/}</td>
+    				<td><!--
+{OVOV:if $lv2[lv2].is_show/}
+						<a class="cz_btn" href="goods.php?action=hide_cat&id={OVOV:$lv2[lv2].id/}">隐藏</a> 
+{OVOV:else/}
+						<a class="cz_btn" href="goods.php?action=show_cat&cat=2&id={OVOV:$lv2[lv2].id/}">显示</a> 	
+{OVOV:/if/}-->
+						<a class="cz_btn" href="goods.php?action=cat_edit&id={OVOV:$lv2[lv2].id/}">修改</a> 
+						<a class="cz_btn" href="javascript:void(0);" onclick="del({OVOV:$lv2[lv2].id/},2)">删除</a>
+					</td>
+				</tr>
+{OVOV:/if/}
+{OVOV:/section/}
+{OVOV:/section/}
+{OVOV:else/}
+				<tr height="32" align="center" bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+    				<td colspan="9" align="center">暂无内容</td>
+				</tr>
+{OVOV:/if/}	
+				</table>
+{OVOV:if $total/}
+				<div class="page" style="padding-top:20px;"><span>第{OVOV:$page_now/}页/共{OVOV:$page_num/}页，共{OVOV:$total/}条 </span> {OVOV:if $total/}{OVOV:$pagelist/}{OVOV:/if/}</div>
+{OVOV:/if/}
+			</form>
+		</div>
+	</div>
+</div>
+</body>
+</html>

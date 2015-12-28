@@ -1,0 +1,60 @@
+{OVOV:include file="ovov_sys/ovoa_header.html"/}
+<script language="javascript" type="text/javascript">
+	function listBgOver(obj){
+		obj.style.background="#E8F4FF";
+	}
+	function listBgOut(obj){
+		obj.style.background="#FFFFFF";
+	}
+	function del(id){
+		 if(confirm("确认删除该友情链接？")){
+			window.location.href="link.php?action=del&site_id="+id;
+		}
+	}
+</script><body>
+<div  class="main">
+  <div class="main_title"><a href="article.php?cid=9&action=article_view"><strong>友情链接管理</strong></a> <span></span>
+    <p></p>
+  </div>
+  <div  class="main_content">
+  <!--文章管理b-->
+  <div  class="contents" style="display:block">
+  <!--  <div>
+    <form method="get" action="article.php?action=chaxun" name="zhannei">
+    <input type="hidden" value="article_chaxun" name="action" />
+    <input type="radio" value="1" name="leibie" {OVOV:if $leibie eq 1/}checked{OVOV:/if/}>&nbsp;ID &nbsp;
+    <input type="radio" value="2" name="leibie" {OVOV:if $leibie eq 2/}checked{OVOV:/if/}>
+    &nbsp;链接标题&nbsp;
+     <input type="text" name="guanjianzi" size="40" value="{OVOV:$guanjianzi/}">
+    <span id="article_channel_div">{OVOV:$channel_list/}</span><span id="article_sort_div"><font color="#FF0000">{OVOV:if $xialeilist eq ""/}请选择频道！{OVOV:else/}{OVOV:$xialeilist/}{OVOV:/if/}</font></span>
+    <input type="submit" value="  搜 索  " name="sqlkeywrod" class="button">
+    </form> </div>	-->
+    <div>
+<form name="channel_form">
+<table width="100%" border="0"   cellspacing="1"  cellpadding="0"  style="background:#d5dde0;" class="table_font">
+  <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" align="center">
+    <td width="14%"  height="32" align="center">选择</td>
+    <td width="16%">ID</td>
+    <td width="23%">名称</td>
+    <td width="27%">网址</td>
+    <td width="20%">操作 <a href="link.php?action=add">添加链接</a></td>
+  </tr>{OVOV:foreach from=$site item=site/}
+  <tr class="adtop_bg1" height="32" align="center" bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+    <td><input type="checkbox" name="site" value="{OVOV:$site.site_id/}" /></td>
+    <td>{OVOV:$site.site_id/}</td>
+   
+    <td>{OVOV:$site.site_name/}</td>
+    <td>{OVOV:$site.site_url/}</td>
+    <td>&nbsp;<a href="link.php?action=edit&site_id={OVOV:$site.site_id/}">修改</a> <a href="#" onClick="del('{OVOV:$site.site_id/}');">删除</a></td>
+  </tr>{OVOV:/foreach/}
+ <!-- <tr  height="32" align="center" bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+    <td colspan="9"><input name="Submit" type="button" class="button" onclick="checkAll(this.form);" value="   全 选  " />
+    &nbsp; <input name="delall" type="button" class="button" id="delall" onclick="delAll();" value="  删除所选  " /></td>
+  </tr>-->
+  <tr height="32" align="center" bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+    <td colspan="9">{OVOV:$pagelist/}&nbsp;共{OVOV:$total/}记录{OVOV:$page_num/}页 当前第{OVOV:$page_now/}</td>
+  </tr>
+</table>
+</form>
+</body>
+</html>

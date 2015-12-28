@@ -1,0 +1,22 @@
+{OVOV:include file="ovov_sys/ovoa_header.html"/}
+<script language="JavaScript">  
+		function GetRTime(qishu,cid){
+			 $.ajax({
+                type: "GET",
+                url: "ajax.php",
+                data: "action=onlinenums&Rand=" + Math.random(),
+                success: function (msg) {
+				//alert(msg);
+                    $("#onlinenums").html(msg);
+                }
+            });
+			setTimeout("GetRTime()",5000);
+		}
+		window.onload=GetRTime;
+</script>
+<body>
+<div class="footer">
+	<div class="copyright">当前在线人数：<a href="user.php?action=user_online&claid=4" target="right"><b><font color="#FF3300" id="onlinenums">{OVOV:$onlinenums/}人</font></b> </a>    {OVOV:$ovovweb.web_copyright/}</div>
+</div>
+</body>
+</html>

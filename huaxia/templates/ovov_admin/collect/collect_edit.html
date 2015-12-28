@@ -1,0 +1,477 @@
+{OVOV:include file="ovov_sys/ovoa_header.html"/}
+<script language="javascript" type="text/javascript">
+	function listBgOver(obj){
+		obj.style.background="#E8F4FF";
+	}
+	function listBgOut(obj){
+		obj.style.background="#FFFFFF";
+	}
+
+	function getSortList(){
+		$("#article_sort_div").html("<img src=\"common/skins/icons/loading.gif\">");
+		$.ajax({
+			url:'ajax.php?action=GetchanelList',
+			data:"pid="+$("#article_channel").val(),
+			type:'POST',
+			success:function(data){
+				$("#article_sort_div").html(data);
+			}
+		});
+	}
+	jQuery(function($) {
+		//标题不能为空
+		$("#cname").focus();
+		$("#cname").blur(function() {
+			aa();
+		});
+		//第一步提交
+		$("#collect_add").click(function() {
+				if(aa()==false) {
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '任务标题名称不能为空'
+               		});
+					$("#cname").focus();
+					return false;
+				}
+				//任务标题名称不能为空
+				if($("#article_channel").val()==''){
+					$("#article_channel").focus();
+					$("#article_channel").addClass("s_sear_red");
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '任务类别不能为空'
+               		});
+					$("#article_channel").focus();
+					return false;
+				}
+				//目标采集网址不能为空
+				if($("#purl").val()==''){
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '目标采集网址不能为空'
+               		});
+					$("#purl").focus();
+					return false;
+				}	
+			});
+		});
+function aa(){
+			if($("#cname").val()==''){
+				$("#cname").addClass("u_input320_red");
+				return false;
+			}else{
+				$("#cname").attr("style","");
+				return true;
+			}	
+	
+}
+//第一步测试b	
+ function cs_collect(){
+	if($("#purl").val()==''){
+					$("#purl").focus();
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '目标采集网址不能为空'
+               		});
+					$("#purl").focus();
+					return false;
+				}
+				
+		art.dialog.open('collect.php?action=cs_collect&purl='+$("#purl").val(),{title: '测试链接是否能采集',width: '50%',height:'300px'});
+ }
+ //第一步测试e	
+ //第二步测试b	
+ function cs_collect2(){
+		 if($("#cc_url").val()==''){
+					$("#cc_url").focus();
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '采集分页列表链接不能为空'
+               		});
+					$("#cc_url").focus();
+					return false;
+		}
+		if($("#liebiaoid").attr("checked")==false){
+					$("#liebiaoid").focus();
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '分页类型不能为空'
+               		});
+					$("#liebiaoid").focus();
+					return false;
+		}
+		if($("#cc_bid").val()==''){
+					$("#cc_bid").focus();
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '开始ID不能为空'
+               		});
+					$("#cc_bid").focus();
+					return false;
+		}
+		if($("#cc_eid").val()==''){
+					$("#cc_eid").focus();
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '结束ID不能为空'
+               		});
+					$("#cc_eid").focus();
+					return false;
+		}
+		if($("#cc_buno").val()==''){
+					$("#cc_buno").focus();
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '步长不能为空'
+               		});
+					$("#cc_buno").focus();
+					return false;
+		}
+
+		art.dialog.open('collect.php?action=cs_collect2&cc_url='+$("#cc_url").val()+'&bid='+$("#cc_bid").val()+'&eid='+$("#cc_eid").val()+'&buno='+$("#cc_buno").val(),{title: '采集链接列表',width: '50%',height:'300px'	});
+ }
+ //第二步测试e
+ //第三步测试b	 
+ function cs_collect3(ccid){
+// alert($("#liebiao_nrruler").val());
+		 if($("#liebiao_nrruler").val()==''){
+					$("#liebiao_nrruler").focus();
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '列表内容页规则不能为空'
+               		});
+					$("#liebiao_nrruler").focus();
+					return false;
+		}
+		art.dialog.open('collect.php?action=cs_collect3&ccid='+ccid+'&ruler='+$("#liebiao_nrruler").val(),{title: '列表内容页规则',width: '50%',height:'300px'	});
+ }
+	
+ function cs_collect4(ccid){
+		 if($("#liebiao_nrruler").val()==''){
+					$("#liebiao_nrruler").focus();
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '列表内容页规则不能为空'
+               		});
+					$("#liebiao_nrruler").focus();
+					return false;
+		}
+	 if($("#liebiao_ruler").val()==''){
+					$("#liebiao_ruler").focus();
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '列表链接不能为空'
+               		});
+					$("#liebiao_ruler").focus();
+					return false;
+		}
+		art.dialog.open('collect.php?action=cs_collect3&ccid='+ccid+'&ruler='+$("#liebiao_nrruler").val()+'&lruler='+$("#liebiao_ruler").val(),{title: '列表链接',width: '50%',height:'300px'	});
+ }
+ //第三步测试e
+ //第四步测试b
+ function cs_collect_time(ccid){//测试采集时间
+   		 if($("#cc_curl").val()==''){
+					$("#cc_curl").focus();
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '目标采集链接不能为空'
+               		});
+					$("#cc_curl").focus();
+					return false;
+		}
+ 		 if($("#time_ruler").val()==''){
+					$("#time_ruler").focus();
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '采集时间规则不能为空'
+               		});
+					$("#time_ruler").focus();
+					return false;
+		}
+	art.dialog.open('collect.php?action=cs_collect4&ccid='+ccid+'&ruler='+$("#time_ruler").val()+'&cc_curl='+$("#cc_curl").val(),{title: '测试采集时间',width: '50%',height:'300px'});
+  }
+ function cs_collect_body (ccid){//测试采集内容
+   		 if($("#cc_curl").val()==''){
+					$("#cc_curl").focus();
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '目标采集链接不能为空'
+               		});
+					$("#cc_curl").focus();
+					return false;
+		}
+ 		 if($("#ccontent_ruler").val()==''){
+					$("#ccontent_ruler").focus();
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '采集内容页规则不能为空'
+               		});
+					$("#ccontent_ruler").focus();
+					return false;
+		}
+	art.dialog.open('collect.php?action=cs_collect4&ccid='+ccid+'&ruler='+$("#ccontent_ruler").val()+'&cc_curl='+$("#cc_curl").val(),{title: '测试采集内容',width: '50%',height:'300px'});
+  }
+ function cs_collect_author (ccid){//测试采集作者
+   		 if($("#cc_curl").val()==''){
+					$("#cc_curl").focus();
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '目标采集链接不能为空'
+               		});
+					$("#cc_curl").focus();
+					return false;
+		}
+ 		 if($("#ctitle_author").val()==''){
+					$("#ctitle_author").focus();
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '采集作者规则不能为空'
+               		});
+					$("#ctitle_author").focus();
+					return false;
+		}
+	art.dialog.open('collect.php?action=cs_collect4&ccid='+ccid+'&ruler='+$("#ctitle_author").val()+'&cc_curl='+$("#cc_curl").val(),{title: '测试采集作者',width: '50%',height:'300px'});
+  }
+ function cs_collect_comfrom (ccid){//测试采集来源
+   		 if($("#cc_curl").val()==''){
+					$("#cc_curl").focus();
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '目标采集链接不能为空'
+               		});
+					$("#cc_curl").focus();
+					return false;
+		}
+ 		 if($("#ctitle_comfrom").val()==''){
+					$("#ctitle_comfrom").focus();
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '采集来源规则不能为空'
+               		});
+					$("#ctitle_comfrom").focus();
+					return false;
+		}
+	art.dialog.open('collect.php?action=cs_collect4&ccid='+ccid+'&ruler='+$("#ctitle_comfrom").val()+'&cc_curl='+$("#cc_curl").val(),{title: '测试采集来源',width: '50%',height:'300px'});
+  }
+ function  cs_collect_title(ccid){//测试采集标题
+   		 if($("#cc_curl").val()==''){
+					$("#cc_curl").focus();
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '目标采集链接不能为空'
+               		});
+					$("#cc_curl").focus();
+					return false;
+		}
+ 		 if($("#ctitle_ruler").val()==''){
+					$("#ctitle_ruler").focus();
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '采集标题规则不能为空'
+               		});
+					$("#ctitle_ruler").focus();
+					return false;
+		}
+	art.dialog.open('collect.php?action=cs_collect4&ccid='+ccid+'&ruler='+$("#ctitle_ruler").val()+'&cc_curl='+$("#cc_curl").val(),{title: '测试采集标题',width: '50%',height:'300px'});
+  }
+  //第四步测试e
+ //查看源代码b
+  function viewbody(ccid){
+		art.dialog.open('collect.php?action=viewbody&ccid='+ccid,{title: '查看源代码',width: '800px',height:'400px'	});
+ }
+ function viewbody2(ccid){
+  		 if($("#cc_curl").val()==''){
+					$("#cc_curl").focus();
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '目标采集链接不能为空'
+               		});
+					$("#cc_curl").focus();
+					return false;
+		}
+		art.dialog.open('collect.php?action=viewbody2&ccid='+ccid+'&cc_curl='+$("#cc_curl").val(),{title: '查看源代码',width: '800px',height:'400px'	});
+ }
+
+ //查看源代码e
+</script>
+<body>
+<div class="main">
+  <div class="main_title"><a href="collect.php?action=add"><strong>采集管理</strong></a> <strong>修改采集新任务</strong><span></span>
+    <p></p>
+  </div>
+  <div class="main_content">
+   <div class="sub_title">
+      <ul>
+        <li {OVOV:if $claid eq 1/}class="tab_on"{OVOV:/if/}><a {OVOV:if $claid neq 1/}href="collect.php?action=edit&article_id={OVOV:$article.id/}"{OVOV:else/} href="javascript:void(0)"{OVOV:/if/}><span>第一步创建任务</span></a></li>
+        <li {OVOV:if $claid eq 2/}class="tab_on"{OVOV:/if/}><a {OVOV:if $claid neq 2/}href="collect.php?action=setadd&claid=2&ccid={OVOV:$article.id/}"{OVOV:else/} href="javascript:void(0)"{OVOV:/if/}><span>第二步配置采集参数</span></a></li>
+        <li {OVOV:if $claid eq 3/}class="tab_on"{OVOV:/if/}><a {OVOV:if $claid neq 3/}href="collect.php?action=setadd&claid=3&ccid={OVOV:$article.id/}"{OVOV:else/} href="javascript:void(0)"{OVOV:/if/}><span>第三步配置采集链接</span></a></li>
+        <li {OVOV:if $claid eq 4/}class="tab_on"{OVOV:/if/}><a {OVOV:if $claid neq 4/}href="collect.php?action=setadd&claid=4&ccid={OVOV:$article.id/}"{OVOV:else/} href="javascript:void(0)"{OVOV:/if/}><span>第四步配置采集内容</span></a></li>
+        <li {OVOV:if $claid eq 5/}class="tab_on"{OVOV:/if/}><a {OVOV:if $claid neq 5/}href="collect.php?action=setadd&claid=5&ccid={OVOV:$article.id/}"{OVOV:else/} href="javascript:void(0)"{OVOV:/if/}><span>第五步完成配置任务</span></a></li>
+      </ul>
+    </div>
+  <!--文章管理b-->
+  <div class="contents" style="display:block">
+    <div>
+	{OVOV:if $claid eq 1/}<form action="collect.php?action=do_edit&article_id={OVOV:$article.id/}" name="article_add_form" id="article_add_form" method="post" enctype="multipart/form-data">{OVOV:/if/}
+	{OVOV:if $claid eq 2/}<form action="collect.php?action=do_setadd2&ccid={OVOV:$article.id/}&claid=2" name="article_add_form2" id="article_add_form2" method="post" enctype="multipart/form-data">{OVOV:/if/}
+	{OVOV:if $claid eq 3/}<form action="collect.php?action=do_setadd3&ccid={OVOV:$article.id/}&claid=3" name="article_add_form3" id="article_add_form3" method="post" enctype="multipart/form-data">{OVOV:/if/}
+	{OVOV:if $claid eq 4/}<form action="collect.php?action=do_setadd4&ccid={OVOV:$article.id/}&claid=4" name="article_add_form4" id="article_add_form4" method="post" enctype="multipart/form-data">{OVOV:/if/}
+	{OVOV:if $claid eq 5/}<form action="collect.php?action=do_setadd5&ccid={OVOV:$article.id/}&claid=5" name="article_add_form5" id="article_add_form5" method="post" enctype="multipart/form-data">{OVOV:/if/}
+	<table width="100%" border="0" cellspacing="1" cellpadding="0" style="background:#d5dde0;" class="table_font">
+	{OVOV:if $claid neq 1/}{OVOV:$dispayb/}{OVOV:/if/}
+	  <tr>
+      <td bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" height="32" style="padding-left:12px;">频道选择</td>
+      <td bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">&nbsp;{OVOV:$channel_list/}<span id="article_sort_div"><select name="article_root_id" onChange="getSortList(this.form);">{OVOV:foreach from=$article1 item=article1/}<option {OVOV:if $article.csid==$article1.channel_id/} selected="selected"{OVOV:/if/}
+ value="{OVOV:$article.csid/}">{OVOV:$article1.channel_name/}</option>{OVOV:/foreach/}</select></span></td>
+    </tr>
+    <tr>
+      <td width="103" bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" height="32" style="padding-left:12px;">任务标题名称</td>
+      <td bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">&nbsp;<label><input name="cname" type="text" id="cname" size="60" maxlength="255" value="{OVOV:$article.cname/}"/>
+      </label> <span class="xspan">*必填</span>    </td>
+    </tr>
+	<tr>
+      <td width="103" bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" height="32" style="padding-left:12px;">目标采集网址</td>
+      <td bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">&nbsp;<label><input name="purl" type="text" id="purl" size="60" maxlength="255" value="{OVOV:$article.purl/}"/>
+      </label> <span class="xspan">*<input name="collect_add2" type="button" onClick="cs_collect()" class="button" id="collect_add2" value=" 点击测试是否能采集 " /></span>    </td>
+    </tr>
+	<tr>
+      <td width="103" bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" height="32" style="padding-left:12px;">采集时间间隔</td>
+      <td bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">&nbsp;<label><input name="cosj" type="text" id="cosj" size="2" maxlength="255" value="{OVOV:$article.cosj/}"/> 秒</label> <span class="xspan">默认为3秒，0为不限制，以最快速度采集，不建议使用0秒。</span>    </td>
+    </tr>
+	{OVOV:if $claid neq 1/}{OVOV:$dispaye/}{OVOV:/if/}
+	{OVOV:if $claid neq 2/}{OVOV:$dispayb/}{OVOV:/if/}
+    <tr>
+      <td bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" height="32" style="padding-left:12px;">字符编码:</td>
+      <td bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">&nbsp;<select size="1" name="cccharset" id="charset">
+		<option value="gb2312" {OVOV:if $setarticle.charset eq 'gb2312'/}selected{OVOV:/if/}>gb2312</option>
+		<option value="utf-8" {OVOV:if $setarticle.charset eq 'utf-8'/}selected{OVOV:/if/}>utf-8</option>
+		</select> 被采集网站的编码，这个很重要，如果选错，采集过来的内容可能是乱码。</td>
+    </tr>
+    <tr>
+      <td valign="middle" bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" height="32" style="padding-left:12px;">链接分页类型：</td>
+      <td bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">&nbsp;<input type="radio" value="1" name="liebiaoid" checked> 有规律ID递增类分页 <input type="radio" value="2" name="liebiaoid" >手动输入URL链接</td>
+    </tr>
+    <tr>
+      <td valign="middle" bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" height="32" style="padding-left:12px;">采集分页列表链接：</td>
+      <td bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">&nbsp;<input name="cc_url" type="text" id="cc_url" size="74" maxlength="255" value="{OVOV:$article.idurl/}" /> <span class="xspan">*[必填]如：http://www.ovov.cn/news_87_[ID].htm [ID]规则ID参数里填</span></td>
+    </tr>
+    <tr>
+      <td valign="middle" bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" height="32" style="padding-left:12px;">分页ID参数：</td>
+      <td bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">&nbsp;开始ID：<label><input name="cc_bid" type="text" id="cc_bid" size="10" value="{OVOV:$article.cc_bid/}" /> 结束ID：<input name="cc_eid" type="text" id="cc_eid" size="10" value="{OVOV:$article.cc_eid/}" /> 步长：<input name="cc_buno" type="text" id="cc_buno" size="5" maxlength="255" value="{OVOV:$article.cc_buno/}" />  ID递增值 <input name="collect_add2" type="button" onClick="cs_collect2()" class="button" id="collect_add2" value=" 测试采集规则是否正确 " /></label></td>
+    </tr>
+    <tr>
+      <td valign="middle" bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" height="45" style="padding-left:12px;">手动采集链接列表</td>
+      <td bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">&nbsp;<textarea rows="8" name="url_list" id="url_list" cols="80">{OVOV:$article.urlcontent/}</textarea></td>
+    </tr>
+	{OVOV:if $claid neq 2/}{OVOV:$dispaye/}{OVOV:/if/}
+	{OVOV:if $claid neq 3/}{OVOV:$dispayb/}{OVOV:/if/}
+	<tr>
+      <td bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" style="padding-left:12px;">分页内容采集规则:</td>
+      <td bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" height="65">&nbsp;<textarea rows="3" name="liebiao_nrruler" id="liebiao_nrruler" cols="80">{OVOV:$article.liebiao_nrruler/}</textarea>
+      <span class="xspan">*<input name="collect_add2" type="button" onClick="cs_collect3({OVOV:$ccid/})" class="button" id="collect_add2" value=" 测试采集规则是否正确 " /></span></td>
+    </tr>
+	<tr>
+      <td bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" style="padding-left:12px;">列表链接采集规则:</td>
+      <td bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" height="65">&nbsp;<textarea rows="3" name="liebiao_ruler" id="liebiao_ruler" cols="80">{OVOV:$article.liebiao_ruler/}</textarea>
+      <span class="xspan">*<input name="collect_add2" type="button" onClick="cs_collect4({OVOV:$ccid/})" class="button" id="collect_add2" value=" 测试采集规则是否正确 " /></span></td>
+    </tr>
+	{OVOV:if $claid neq 3/}{OVOV:$dispaye/}{OVOV:/if/}
+	{OVOV:if $claid neq 4/}{OVOV:$dispayb/}{OVOV:/if/}
+	<tr>
+      <td bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" height="32" style="padding-left:12px;">内容页链接：</td>
+      <td bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" height="32">&nbsp;<input name="cc_curl" type="text" id="cc_curl" size="105" maxlength="255" value="{OVOV:$article.cc_curl/}" /><span class="xspan">*要采集的目标内容页 <input name="collect_add2" type="button" onClick="viewbody2({OVOV:$ccid/})" class="button" id="collect_add2" value="  查 看 源 代 码  " /></span></td>
+    </tr>
+      <tr>
+      <td bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" height="32" style="padding-left:12px;">标题采集规则</td>
+      <td bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" height="65">&nbsp;<textarea rows="3" name="ctitle_ruler" id="ctitle_ruler" cols="80">{OVOV:$article.ctitle_ruler/}</textarea><span class="xspan">*<input name="collect_title" type="button" onClick="cs_collect_title({OVOV:$ccid/})" class="button" id="collect_title" value=" 测试采集标题是否正确 " /></span></td>
+    </tr>
+	 <tr>
+      <td bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" height="32" style="padding-left:12px;">来源采集规则</td>
+      <td bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" height="65">&nbsp;<textarea rows="3" name="ctitle_comfrom" id="ctitle_comfrom" cols="80">{OVOV:$article.ctitle_ruler/}</textarea><span class="xspan">*<input name="cc_comfrom" type="button" onClick="cs_collect_comfrom({OVOV:$ccid/})" class="button" id="cc_comfrom" value=" 测试采集来源是否正确 " /></span></td>
+    </tr>
+	   <tr>
+      <td bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" height="32" style="padding-left:12px;">作者采集规则</td>
+      <td bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" height="65">&nbsp;<textarea rows="3" name="ctitle_author" id="ctitle_author" cols="80">{OVOV:$article.ctitle_ruler/}</textarea><span class="xspan">*<input name="cc_author" type="button" onClick="cs_collect_author({OVOV:$ccid/})" class="button" id="cc_author" value=" 测试采集作者是否正确 " /></span></td>
+    </tr>
+    <tr>
+      <td bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" height="32" style="padding-left:12px;">内容采集规则:</td>
+      <td bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" height="75">&nbsp;<textarea rows="3" name="ccontent_ruler" id="ccontent_ruler" cols="80">{OVOV:$article.ccontent_ruler/}</textarea><span class="xspan">*<input name="cc_comtent" type="button" onClick="cs_collect_body({OVOV:$ccid/})" class="button" id="cc_comtent" value=" 测试采集文章内容是否正确 " /></span></td>
+    </tr>
+<tr>
+      <td bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" height="32" style="padding-left:12px;">时间采集规则:</td>
+      <td bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" height="65">&nbsp;<textarea rows="3" name="time_ruler" id="time_ruler" cols="80">{OVOV:$article.time_ruler/}</textarea>
+        <span class="xspan">*
+        <input name="cc_time" type="button" onClick="cs_collect_time({OVOV:$ccid/})" class="button" id="cc_time" value=" 测试采集时间是否正确 " /></span></td>
+    </tr>
+	{OVOV:if $claid neq 4/}{OVOV:$dispaye/}{OVOV:/if/}
+	{OVOV:if $claid neq 5/}{OVOV:$dispayb/}{OVOV:/if/}
+      <tr>
+      <td height="32" colspan="2" bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" style="text-align:center">　恭喜您！您已经成功完成了配置！ </td>
+      </tr>
+	{OVOV:if $claid neq 5/}{OVOV:$dispaye/}{OVOV:/if/}
+      <tr>
+      <td colspan="2" bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" height="32" style="padding-left:12px;text-align:center">
+	  {OVOV:if $claid eq 1/}<input name="collect_add" type="submit" class="button" id="collect_add" value="  保存继续下一步  " />{OVOV:/if/}
+	  {OVOV:if $claid eq 2/}<input name="collect_add2" type="submit" class="button" id="collect_add2" value="  保存继续下一步  " />{OVOV:/if/}
+	  {OVOV:if $claid eq 3/}<input name="collect_add3" type="submit" class="button" id="collect_add3" value="  保存继续下一步  " />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input name="collect_add2" type="button" onClick="viewbody({OVOV:$ccid/})" class="button" id="collect_add2" value="  查 看 源 代 码  " />{OVOV:/if/}
+	  {OVOV:if $claid eq 4/}<input name="collect_add4" type="submit" class="button" id="collect_add4" value="  保存继续下一步  " />{OVOV:/if/}   
+	  {OVOV:if $claid eq 5/}<input name="collect_add4" type="submit" class="button" id="collect_add4" value="  完 成  "  />{OVOV:/if/}
+	  <span class="xspan">采集规则说明：要采集的内容用 || 隔开，多个规则请用 [OVOVSPR] 隔开</span>
+	  </td>
+    </tr>
+  </table>
+	</form>
+  </div>
+  </div>
+   <!--文章管理e-->
+</div>
+</div>
+</body>
+</html>

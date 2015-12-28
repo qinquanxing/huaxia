@@ -1,0 +1,59 @@
+{OVOV:include file="ovov_sys/ovoa_header.html"/}
+<body>
+<div class="header">
+	<div class="logo"><a href="{OVOV:$ovovweb.web_url/}" target="_blank"><img src="common/skin/1/images/logo.gif" /></a></div>
+    <div class="sub_nav">
+		{OVOV:if $qx_id==1/}<a href="user.php?claid=1" target="right" class="a6">系统管理员</a>{OVOV:/if/}
+        <a href="user.php?action=user_set&claid=2" target="right" class="a3">个人设置</a>
+        <!-- <a href="msg.php?action=msg_list&claid=1" target="right" class="a1">消息中心</a> -->
+		<a href="user.php?action=user_modifypass&claid=3" target="right" class="a2">修改密码</a>
+        <a href="javascript:void(0);" onClick="showModalDialog('index.php?ovoa=AboutSys',window,'dialogHeight:300px;dialogWidth:360px;dialogleft:350px;help:no;status:no;scroll:no');"  class="a4">关于本系统</a></li>
+       <a href="javascript:parent.location.href='login.php?action=logout'" onClick="return confirm('确定要退出吗？');" class="a5">安全退出</a>
+		</div>
+    <div class="nav">
+    	<div class="nav_left"></div>
+    	<ul>
+		<li class="n1"><a class="click" href="index.php?ovoa=ovoa_right" target="right">系统首页</a></li>    
+		{OVOV:foreach from=$mytopmenu item=mytopmenu key=k name=mytopmenu/}{OVOV:if $mytopmenu.channel_id|in_array:$user_tview || $mytopmenu.channel_id|in_array:$user_view/}
+    	<li class="n{OVOV:$smarty.foreach.mytopmenu.index+2/}"><a href="{OVOV:if $mytopmenu.channel_urlok/}{OVOV:$mytopmenu.channel_urlname/}{OVOV:else/}{OVOV:$mytopmenu.channel_urlname/}?action={OVOV:$mytopmenu.channel_ename/}&cid={OVOV:$mytopmenu.channel_id/}{OVOV:/if/}"  target="right">{OVOV:$mytopmenu.channel_name/}</a></li>
+		{OVOV:/if/}
+        {OVOV:/foreach/}
+        </ul>
+        <div class="nav_right"></div>
+    </div>
+    <div class="userbox">
+    	<div class="ub_left"></div>
+    	<div class="ub_con">{OVOV:$user_name/}，欢迎您！  用户权限：{OVOV:$qx/}   <SCRIPT language=JavaScript>d = new Date();document.write((d.getFullYear())+"年"+(d.getMonth()+1)+"月"+d.getDate()+ "日"); </SCRIPT> <SCRIPT language=JavaScript>
+					d = new Date();
+					switch (d.getDay()) {
+					case 0:
+					strweek="日";
+					break;
+					case 1:
+					strweek="一";
+					break;
+					case 2:
+					strweek="二";
+					break;
+					case 3:
+					strweek="三";
+					break;
+					case 4:
+					strweek="四";
+					break;
+					case 5:
+					strweek="五";
+					break;
+					case 6:
+					strweek="六";
+					break;
+					}
+					document.write("星期"+ strweek);
+                  </SCRIPT></div>
+        <div class="ub_right"></div>
+    	<div class="ub_gg"><MARQUEE onmouseover=this.stop() onmouseout=this.start() scrollamount="2">公告栏滚动文字：重要信息，点击查看详情</MARQUEE></div>
+    </div>
+</div>
+<div class="zhezhao" style="position:fixed; top:0; left:0; z-index:2; width:100%;height:100%; background:#000; filter:alpha(opacity=70); opacity:0.7;display:none;"></div>
+</body>
+</html>

@@ -1,0 +1,779 @@
+{OVOV:include file="ovov_sys/ovoa_header.html"/}
+<script language="javascript" type="text/javascript" src="common/rili/WdatePicker.js"></script> 
+<link rel="stylesheet" href="../e/themes/default/default.css" />
+<link rel="stylesheet" href="../e/plugins/code/prettify.css" />
+<script charset="utf-8" src="../e/kindeditor.js"></script>
+<script charset="utf-8" src="../e/lang/zh_CN.js"></script>
+<script charset="utf-8" src="../e/plugins/code/prettify.js"></script>
+<style type="text/css">
+.ke-container{
+	margin-left:10px;
+}
+</style>
+<script language="javascript" type="text/javascript">
+	KindEditor.ready(function(K) {
+			var editor1 = K.create('textarea[name="intro_meo"]', {
+				cssPath : '../e/plugins/code/prettify.css',
+				uploadJson : '../e/php/upload_json.php',
+				fileManagerJson : '../e/php/file_manager_json.php',
+				allowFileManager : true,
+				syncType:'auto',
+				afterCreate : function() {
+					var self = this;
+					K.ctrl(document, 13, function() {
+						self.sync();
+						K('form[name=example]')[0].submit();
+					});
+					K.ctrl(self.edit.doc, 13, function() {
+						 self.sync();
+						K('form[name=example]')[0].submit();
+					});
+				},afterChange:function(){//同步给textarea
+				   this.sync();
+				 }
+			});
+			prettyPrint();
+		});
+function del_Channel(id){
+	if(confirm('确定删除此分类？')){
+		location.href = 'ovoa.php?action=Ovoa_Channel_Del&id='+id;
+	}
+}
+function delDepartment(id){
+	if(confirm('确定删除此部门？')){
+		location.href = 'ovoa.php?action=Ovoa_Department_del&id='+id;
+	}
+}
+function del_quanxian(id){
+	if(confirm('确定删除此权限？')){
+		location.href = 'ovoa.php?action=Do_Ovoa_Quanxian_DEL&del_qx_id='+id;
+	}
+}
+function checkAll(){
+	for (var p=0;p<document.forms[1].elements.length;p++){
+		var m = document.forms[1].elements[p];
+			if (m.checked==false){
+				m.checked = true;
+			}
+			else{
+				m.checked = false;
+			}
+	}
+}
+
+
+function delAll(){
+	var string = "";
+	for (var i = 0 ; i<document.forms[1].elements.length ; i++){
+		if(document.forms[1].elements[i].checked !=""){
+			if(i<(document.forms[1].elements.length)){
+				string = string + document.forms[1].elements[i].value+",";
+			}else{
+				string = string + document.forms[1].elements[i].value;
+			}
+		}
+	}
+	if(string == ""){
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '请选择内容'
+               		});
+	}else{
+		//alert(string);
+		if(confirm('确定删除这些用户？')){location.href="user.php?action=do_del&id="+string;}
+	}
+	
+}
+	function listBgOver(obj){
+		obj.style.background="#E8F4FF";
+	}
+	function listBgOut(obj){
+		obj.style.background="#FFFFFF";
+	}
+	
+	jQuery(function($) {
+			//频道栏目添加提交B
+			$("#channel_add_submit").click(function() {
+				if($("#channel_name").val()=='') {
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '子分类名称不能为空!'
+               		});
+					$("#channel_name").focus();
+					return false;
+				}
+				
+				//子分类英文名是否为空
+				if($("#channel_ename").val()==''){
+					$("#channel_ename").focus();
+					$("#channel_ename").addClass("s_sear_red");
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '子分类英文名不能为空!'
+               		});
+					return false;
+				}
+				//子分类链接是否为空
+				if($("#channel_urlname").val()==''){
+					$("#channel_urlname").focus();
+					$("#channel_urlname").addClass("s_sear_red");
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '子分类链接不能为空!'
+               		});
+					return false;
+				}
+
+
+				//子分类内容是否为空
+				if($("#intro_meo").val()==''){
+					$("#intro_meo").focus();
+					$("#intro_meo").attr("style","border:#F00 solid 1px;");
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '子分类简介信息不能为空!'
+               		});
+					return false;
+				}
+			});
+			//频道栏目添加提交e
+			//部门添加添加提交b
+			$("#Department_New_submit").click(function() {
+				if($("#de_name").val()=='') {
+					$("#de_name").addClass("s_sear_red");
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '添加部门名称不能为空!'
+               		});
+					$("#de_name").focus();
+					return false;
+				}
+			});
+		//部门添加提交e
+		//提交权限内容b
+		$("#Quanxian_New_submit").click(function() {
+				if($("#qx_name").val()=='') {
+					$("#qx_name").addClass("s_sear_red");
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '添加权限名称不能为空!'
+               		});
+					$("#qx_name").focus();
+					return false;
+				}
+			});
+		//提交权限内容e
+		});
+		
+		
+		
+	
+</script>
+<body>
+<div class="main">
+  <div class="main_title"><strong>系统管理</strong></div>
+  <div class="main_content">
+  <!--选项卡B-->
+    <div class="sub_title">
+      <ul>
+        <li {OVOV:if $claid eq 0/}class="tab_on"{OVOV:/if/}><a href="ovoa.php?action=Ovoa_Config&claid=0"><span>系统配置</span></a></li>
+        <li><a href="user.php?claid=1"><span>用户管理</span></a></li>
+        <li {OVOV:if $claid eq 1 || $claid eq 11 || $claid eq 12/}class="tab_on"{OVOV:/if/}><a href="ovoa.php?action=Ovoa_Channel&claid=1"><span>系统模块</span></a></li>
+        <li {OVOV:if $claid eq 2/}class="tab_on"{OVOV:/if/}><a href="ovoa.php?action=Ovoa_Department&claid=2"><span>部门管理</span></a></li>
+        <li {OVOV:if $claid eq 3/}class="tab_on"{OVOV:/if/}><a href="ovoa.php?action=Ovoa_Quanxian&claid=3"><span>权限管理</span></a></li>
+        <li {OVOV:if $claid eq 4/}class="tab_on"{OVOV:/if/}><a href="ovov_abdata.php?action=Ovov_DataABC"><span>基础分类</span></a></li>
+      </ul>
+      <div class="search">
+        <form action="ovoa.php?action=ovoa_chaxun&claid={OVOV:$claid/}" method="post" id="chaxun" name="chaxun" >
+          <p>
+            <input name="ovoa_sqlname" id="ovoa_sqlname"  type="text" value="{OVOV:$ovoa_sqlname/}" />
+          </p>
+          <span>
+          <INPUT class="but_sql" type=submit value=" " name="ovoa_sql_submit" id="ovoa_sql_submit">
+          </span>
+        </form>
+      </div>
+    </div>
+	<!--选项卡E-->
+    <!--系统配置b-->
+    <div class="contents" {OVOV:if $claid eq 0/}style="display:block"{OVOV:/if/}>
+      <div>
+        <form action="ovoa.php?action=Do_Ovoa_Config" method="post" name="sysconfig" id="sysconfig" enctype="multipart/form-data">
+          <table width="100%" border="0" cellspacing="1" cellpadding="0" style="background:#d5dde0;" class="table_font">
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;系统名称：</td>
+              <td align="left" width="80%" >&nbsp;
+                <input class="u_input320" name="web_name" type="text" id="web_name" value="{OVOV:$ovovweb.web_name/}" />
+                &nbsp;<span class="xspan">*系统名称</span></td>
+            </tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;IOS版本号：</td>
+              <td align="left" width="80%" >&nbsp;
+                <input class="u_input320" name="ver_ios" type="text" id="ver_ios" value="{OVOV:$ovovweb.ver_ios/}" />
+                &nbsp;<span class="xspan">*IOS版本号</span></td>
+            </tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;IOS新版本下载地址：</td>
+              <td align="left" width="80%" >&nbsp;
+                <input class="u_input320" name="ver_ios_url" type="text" id="ver_ios_url" value="{OVOV:$ovovweb.ver_ios_url/}" />
+                &nbsp;<span class="xspan">*IOS新版本下载地址</span></td>
+            </tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;android版本号：</td>
+              <td align="left" width="80%" >&nbsp;
+                <input class="u_input320" name="ver_android" type="text" id="ver_android" value="{OVOV:$ovovweb.ver_android/}" />
+                &nbsp;<span class="xspan">*android版本号</span></td>
+            </tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;android新版本下载地址：</td>
+              <td align="left" width="80%" >&nbsp;
+                <input class="u_input320" name="ver_android_url" type="text" id="ver_android_url" value="{OVOV:$ovovweb.ver_android_url/}" />
+                &nbsp;<span class="xspan">*android新版本下载地址</span></td>
+            </tr>
+			
+            <!--<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;系统地址：</td>
+              <td align="left" width="80%" >&nbsp;
+                <input class="u_input320" name="web_url" type="text" id="web_url" value="{OVOV:$ovovweb.web_url/}" />
+                &nbsp;<span class="xspan">*系统地址</span></td>
+            </tr>
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp; LOGO地址：</td>
+              <td align="left" width="80%" >&nbsp;
+                <table>
+                  <tr>
+                    <td>&nbsp;
+                      <INPUT type=text name="ovoa_logo" id="ovoa_logo" class="u_input320" value="{OVOV:$ovovweb.website_logo/}" ></td>
+                    <td><iframe name="file_upload" src="upload.php?action=new_ovoafile&isReturn=true&dizhi=ovoa_logo&rstform=sysconfig" scrolling="no" frameborder="0" id="upload_file_iframe" style="height:28px; padding-top:0px;"></iframe></td>
+                  </tr>
+                </table></td>
+            </tr>
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;公司主页：</td>
+              <td align="left" width="80%" >&nbsp;
+                <input class="s_sear" name="website_url" type="text" id="website_url" value="{OVOV:$ovovweb.website_url/}" size="30" />
+                &nbsp;<span class="xspan">*公司主页</span></td>
+            </tr>
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;系统管理员：</td>
+              <td align="left" width="80%" >&nbsp;
+                <input class="s_sear" name="web_admin" type="text" id="web_admin" value="{OVOV:$ovovweb.web_admin/}" size="30" />
+                &nbsp;<span class="xspan">*系统管理员</span></td>
+            </tr>
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;管理员邮件：</td>
+              <td align="left" width="80%" >&nbsp;
+                <input class="s_sear" name="web_email" type="text" id="web_email" value="{OVOV:$ovovweb.web_email/}" size="30" />
+                &nbsp;<span class="xspan">*管理员邮件</span></td>
+            </tr>
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;公司地址：</td>
+              <td align="left" width="80%" >&nbsp;
+                <input class="s_sear" name="web_address" type="text" id="web_address" value="{OVOV:$ovovweb.web_address/}" size="30" />
+                &nbsp;<span class="xspan">*公司地址</span></td>
+            </tr>
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;客服热线：</td>
+              <td align="left" width="80%" >&nbsp;
+                <input class="s_sear" name="web_hotline" type="text" id="web_hotline" value="{OVOV:$ovovweb.web_hotline/}" size="30" />
+                &nbsp;<span class="xspan">*客服热线</span></td>
+            </tr>
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;招聘热线：</td>
+              <td align="left" width="80%" >&nbsp;
+                <input class="s_sear" name="web_hrline" type="text" id="web_hrline" value="{OVOV:$ovovweb.web_hrline/}" size="30" />
+                &nbsp;<span class="xspan">*招聘热线</span></td>
+            </tr>
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;传真：</td>
+              <td align="left" width="80%" >&nbsp;
+                <input class="s_sear" name="web_fax" type="text" id="web_fax" value="{OVOV:$ovovweb.web_fax/}" size="30" />
+                &nbsp;<span class="xspan">*传真</span></td>
+            </tr>
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;备案信息：</td>
+              <td align="left" width="80%" >&nbsp;
+                <input class="u_input600" name="web_cert" type="text" id="web_cert" value="{OVOV:$ovovweb.web_cert/}" size="30" />
+                &nbsp;<span class="xspan">*备案信息</span></td>
+            </tr>
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;上传扩展名：</td>
+              <td align="left" width="80%" >&nbsp;
+                <input class="u_input600" name="allowed_file" type="text" id="allowed_file" value="{OVOV:$ovovweb.allowed_file/}" />
+                &nbsp;<span class="xspan">*上传扩展名</span></td>
+            </tr>
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;上传大小：</td>
+              <td align="left" width="80%" >&nbsp;
+                <select name="allowed_size" id="allowed_size">
+                  <option value="0.5M"{OVOV:if $ovovweb.allowed_size == "0.5M"/} selected="selected"{OVOV:/if/}>0.5M</option>
+                  <option value="1M"{OVOV:if $ovovweb.allowed_size == "1M"/} selected="selected"{OVOV:/if/}>1M</option>
+                  <option value="2M"{OVOV:if $ovovweb.allowed_size == "2M"/} selected="selected"{OVOV:/if/}>2M</option>
+                  <option value="10M"{OVOV:if $ovovweb.allowed_size == "10M"/} selected="selected"{OVOV:/if/}>10M</option>
+                  <option value="20M"{OVOV:if $ovovweb.allowed_size == "20M"/} selected="selected"{OVOV:/if/}>20M</option>
+                  <option value="60M"{OVOV:if $ovovweb.allowed_size == "60M"/} selected="selected"{OVOV:/if/}>60M</option>
+                </select>
+                &nbsp;<span class="xspan">*上传大小</span></td>
+            </tr>
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;是否开启伪静态：</td>
+              <td align="left" width="80%" >&nbsp;
+                <select name="web_wshtml" id="web_wshtml">
+                  <option value="open"{OVOV:if $ovovweb.web_wshtml == "open"/} selected="selected"{OVOV:/if/}>开</option>
+                  <option value="close"{OVOV:if $ovovweb.web_wshtml == "close"/} selected="selected"{OVOV:/if/}>关</option>
+       			</select>
+               </td>
+            </tr>
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;系统开关：</td>
+              <td align="left" width="80%" >&nbsp;
+                <select name="web_switch" id="web_switch">
+                  <option value="open"{OVOV:if $ovovweb.web_switch == "open"/} selected="selected"{OVOV:/if/}>开</option>
+                  <option value="close"{OVOV:if $ovovweb.web_switch == "close"/} selected="selected"{OVOV:/if/}>关</option>
+                </select>
+                <span style="COLOR: #f00">
+                <label>
+                  <input type="checkbox" name="self" id="self" value="1" {OVOV:if $ovovweb.web_self==1/} checked="checked"{OVOV:/if/}>
+                </label>
+                自定义时间 从
+                <label> {OVOV:$sweekslect/} </label>
+                <label>{OVOV:$stimelect/} : {OVOV:$secondlect/}</label>
+                到
+                <label> {OVOV:$eweekslect/} </label>
+                {OVOV:$etimelect/} : {OVOV:$esecondlect/}
+                开启</span>&nbsp;<span class="xspan">*系统管理员</span></td>
+            </tr>
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;关闭原因：</td>
+              <td align="left" width="80%" >&nbsp;
+                <textarea class="textarea" name="close_reason" id="close_reason">{OVOV:$ovovweb.close_reason/}</textarea>
+                &nbsp;<span class="xspan">*关闭原因</span></td>
+            </tr>
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;版权信息：</td>
+              <td align="left" width="80%" >&nbsp;
+                <textarea class="textarea" name="web_copyright" id="web_copyright">{OVOV:$ovovweb.web_copyright/}</textarea>
+                &nbsp;<span class="xspan">*版权信息</span></td>
+            </tr> 
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;网站关键字：</td>
+              <td align="left" width="80%" >&nbsp;
+                <textarea class="textarea" name="web_keywords" id="web_keywords">{OVOV:$ovovweb.web_keywords/}</textarea>
+                &nbsp;<span class="xspan">*网站关键字</span></td>
+            </tr>
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;网站描述：</td>
+              <td align="left" width="80%" >&nbsp;
+                <textarea class="textarea" name="web_regnotice" id="web_regnotice">{OVOV:$ovovweb.web_regnotice/}</textarea>
+                &nbsp;<span class="xspan">*网站描述</span></td>
+            </tr>-->
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;</td>
+              <td align="left" width="80%" colspan="2">&nbsp;
+                <INPUT class="but_modfy" type=submit value=" " name="msg_send_submit" id="msg_send_submit"></td>
+            </tr>
+          </table>
+        </form>
+      </div>
+    </div>
+    <!--系统配置e--> 
+    <!--分类管理b-->
+    <div class="contents" {OVOV:if $claid eq 1/}style="display:block"{OVOV:/if/}>
+      <form name="usernamelist">
+        <div><a href="ovoa.php?action=Ovoa_Channel_Add&claid=11&jibie=1" class="s"><img src="common/skin/1/images/add.gif" /></a></div>
+        <div>
+          <table width="100%" border="0" cellspacing="1" cellpadding="0" style="background:#d5dde0;" class="table_font">
+            <tr style="background:url(common/skin/1/images/table_title.gif) repeat-x;">
+              <td height="32" align="center">ID号</td>
+              <td align="center">分类名称</td>
+              <td align="center">分类链接</td>
+              <td align="center">排序数字</td>
+              <td align="center">分类级别</td>
+              <td align="center">操作</td>
+            </tr>
+            {OVOV:section name=d loop=$channeld /}
+            <tr bgcolor="#E8F4F4" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" >
+              <td align="center" height="33">{OVOV:$channeld[d].channel_id/}</td>
+              <td style="padding-left:10px; text-align:left"><img src="common/images/jiakk.png" /> <a href="ovoa.php?action=Ovoa_Channel_Edit&claid=12&id={OVOV:$channeld[d].channel_id/}&kid={OVOV:$kid/}&jibie=1">{OVOV:$channeld[d].channel_name/}</a>&nbsp;<a href="ovoa.php?action=Ovoa_Channel_Add&claid=11&id={OVOV:$channeld[d].channel_id/}&kid={OVOV:$kid/}&jibie=2"><font color="#FF0000">[添加子类]</font></a></td>
+              <td style="padding-left:10px; text-align:left">{OVOV:$channeld[d].channel_urlname/}</td>
+              <td align="center">{OVOV:$channeld[d].channel_order/}</td>
+              <td align="center">{OVOV:$channeld[d].jibie/}级</td>
+              <td align="center"><a href="ovoa.php?action=Ovoa_Channel_Paixu&claid=13&id={OVOV:$channeld[d].channel_id/}&oid={OVOV:$channeld[d].channel_order/}">排序</a>&nbsp;&nbsp;&nbsp;<a href="ovoa.php?action=Ovoa_Channel_Edit&claid=12&id={OVOV:$channeld[d].channel_id/}&kid={OVOV:$kid/}&jibie=1">修改</a>&nbsp;&nbsp;&nbsp;<a onClick="del_Channel('{OVOV:$channeld[d].channel_id/}')" href="#">删除</a></td>
+            </tr>
+            <!--<table id="g_{OVOV:$smarty.section.d.index+1/}" width="100%" border="0" cellspacing="0" cellpadding="0" style="display:none;">--> 
+            {OVOV:section name=x loop=$channelx/}
+            {OVOV:if $channelx[x].channel_root_id == $channeld[d].channel_id/}
+            <tr onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" bgcolor="#FFFFFF" >
+              <td align="center" height="33">{OVOV:$channelx[x].channel_id/}</td>
+              <td style="padding-left:10px; text-align:left"><font style="padding-left:10px;">|--<a href="ovoa.php?action=Ovoa_Channel_Edit&claid=12&id={OVOV:$channelx[x].channel_id/}&kid={OVOV:$kid/}&jibie=2">{OVOV:$channelx[x].channel_name/}</a></font>&nbsp;<a href="ovoa.php?action=Ovoa_Channel_Add&claid=11&id={OVOV:$channelx[x].channel_id/}&kid={OVOV:$kid/}&jibie=3"><font color="#FF0000">[添加子类]</font></a></td>
+              <td style="padding-left:10px; text-align:left">{OVOV:$channelx[x].channel_urlname/}</td>
+              <td align="center">{OVOV:$channelx[x].channel_order/}</td>
+              <td align="center">{OVOV:$channelx[x].jibie/}级</td>
+              <td align="center"><a href="ovoa.php?action=Ovoa_Channel_Paixu&claid=13&id={OVOV:$channelx[x].channel_id/}&oid={OVOV:$channelx[x].channel_order/}">排序</a>&nbsp;&nbsp;&nbsp;<a href="ovoa.php?action=Ovoa_Channel_Edit&claid=12&id={OVOV:$channelx[x].channel_id/}&kid={OVOV:$kid/}&jibie=2">修改</a>&nbsp;&nbsp;&nbsp;<a onClick="del_Channel('{OVOV:$channelx[x].channel_id/}')" href="#">删除</a></td>
+            </tr>
+            {OVOV:section name=xx loop=$channelxx/}
+            {OVOV:if $channelxx[xx].channel_root_id == $channelx[x].channel_id/}
+            <tr onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" bgcolor="#FFFFFF">
+              <td align="center" height="33">{OVOV:$channelxx[xx].channel_id/}</td>
+              <td style="text-align:left"><font style="padding-left:40px;" >|--<a href="ovoa.php?action=Ovoa_Channel_Edit&claid=12&id={OVOV:$channelxx[xx].channel_id/}&jibie=3">{OVOV:$channelxx[xx].channel_name/}</a></font>&nbsp;<a href="ovoa.php?action=Ovoa_Channel_Add&claid=11&id={OVOV:$channelxx[xx].channel_id/}&kid={OVOV:$kid/}&jibie=4"><font color="#FF0000">[添加子类]</font></a></td>
+              <td style="padding-left:10px; text-align:left">{OVOV:$channelxx[xx].channel_urlname/}</td>
+              <td align="center">{OVOV:$channelxx[xx].channel_order/}</td>
+              <td align="center">{OVOV:$channelxx[xx].jibie/}级</td>
+              <td align="center"><a href="ovoa.php?action=Ovoa_Channel_Paixu&claid=13&id={OVOV:$channelxx[xx].channel_id/}&oid={OVOV:$channelxx[xx].channel_order/}">排序</a>&nbsp;&nbsp;&nbsp;<a href="ovoa.php?action=Ovoa_Channel_Edit&claid=12&id={OVOV:$channelxx[xx].channel_id/}&jibie=3">修改</a>&nbsp;&nbsp;&nbsp;<a onClick="del_Channel('{OVOV:$channelxx[xx].channel_id/}')" href="#">删除</a></td>
+            </tr>
+            {OVOV:section name=xxx loop=$channelxxx/}
+            {OVOV:if $channelxxx[xxx].channel_root_id == $channelxx[xx].channel_id/}
+            <tr onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" bgcolor="#FFFFFF">
+              <td align="center" height="33">{OVOV:$channelxxx[xxx].channel_id/}</td>
+              <td style="text-align:left"><font style="padding-left:80px;">|--<a href="ovoa.php?action=Ovoa_Channel_Edit&claid=12&id={OVOV:$channelxxx[xxx].channel_id/}&jibie=4">{OVOV:$channelxxx[xxx].channel_name/}</a></font></td>
+              <td style="padding-left:10px; text-align:left">{OVOV:$channelxxx[xxx].channel_urlname/}</td>
+              <td align="center">{OVOV:$channelxxx[xxx].channel_order/}</td>
+              <td align="center">{OVOV:$channelxxx[xxx].jibie/}级</td>
+              <td align="center"><a href="ovoa.php?action=Ovoa_Channel_Paixu&claid=13&id={OVOV:$channelxxx[xxx].channel_id/}&oid={OVOV:$channelxxx[xxx].channel_order/}">排序</a>&nbsp;&nbsp;&nbsp;<a href="ovoa.php?action=Ovoa_Channel_Edit&claid=12&id={OVOV:$channelxxx[xxx].channel_id/}&jibie=4">修改</a>&nbsp;&nbsp;&nbsp;<a onClick="del_Channel('{OVOV:$channelxxx[xxx].channel_id/}')" href="#">删除</a></td>
+            </tr>
+            {OVOV:/if/}
+            {OVOV:/section/}
+            {OVOV:/if/}
+            {OVOV:/section/}
+            {OVOV:/if/}
+            {OVOV:/section/}
+            {OVOV:/section/}
+          </table>
+        </div>
+      </form>
+    </div>
+    <!--分类管理e--> 
+    <!--部门管理b-->
+    <div class="contents" {OVOV:if $claid eq 2/}style="display:block"{OVOV:/if/}>
+        <div><a href="ovoa.php?action=Ovoa_Department_New&claid=21" class="s"><img src="common/skin/1/images/add.gif" /></a></div>
+        <div>
+          <table width="100%" border="0" cellspacing="1" cellpadding="0" style="background:#d5dde0;" class="table_font">
+            <tr style="background:url(common/skin/1/images/table_title.gif) repeat-x;">
+                <td height="32" align="center">ID号</td>
+                <td align="center">部门名称</td>
+                <td align="center">部门经理</td>
+                <td align="center">部门人数</td>
+                <td align="center">部门人员列表</td>
+                <td align="center">部门描述</td>
+                <td align="center">操作</td>
+            </tr>
+          {OVOV:foreach from=$department_list item=department_list/}
+     	<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);"  height="32" >
+        <td align="center">{OVOV:$department_list.de_id/}</td>
+        <td align="center">{OVOV:$department_list.de_name/}</td>
+        <td align="center">{OVOV:if $department_list.managename/}{OVOV:$department_list.managename/}{OVOV:else/}<font color="#FF0000">未知</font>{OVOV:/if/}</td>
+      	<td align="center">{OVOV:$department_list.renno/}</td>
+       	<td align="center" style="text-align:left; padding-left:10px;">{OVOV:$department_list.renlist/}</td>
+        <td align="center" style="text-align:left; padding-left:10px;">{OVOV:$department_list.de_intro/}</td>
+        <td align="center"><a href="ovoa.php?action=Ovoa_Department_Edit&claid=22&dpxg_id={OVOV:$department_list.de_id/}">修改</a>&nbsp;&nbsp;&nbsp;<a onClick="delDepartment('{OVOV:$department_list.de_id/}')" href="#">删除</a></td>
+       </tr>
+      {OVOV:/foreach/}
+            </table>
+        </div>
+    </div>
+    <!--部门管理e--> 
+    <!--部门添加b-->
+    <div class="contents" {OVOV:if $claid eq 21/}style="display:block"{OVOV:/if/}>
+        <div><form action="ovoa.php?action=Dosave_Ovoa_Department_New" method="post" name="Department_New" id="Department_New" enctype="multipart/form-data">
+          <table width="100%" border="0" cellspacing="1" cellpadding="0" style="background:#d5dde0;" class="table_font">
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;部门名称：</td>
+              <td align="left" width="80%" >&nbsp;<INPUT class="s_sear" type=text name="de_name" id="de_name">&nbsp;<span class="xspan">*部门名称</span></td>
+            </tr>
+              <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;部门人员：</td>
+              <td align="left" width="80%" >&nbsp;<SELECT id="de_jingli" name="de_jingli"><OPTION selected value=0>选择人员</OPTION> {OVOV:foreach from=$dept_user item=dept_user/}<OPTION value={OVOV:$dept_user.user_id/}>{OVOV:$dept_user.user_ture_name/}({OVOV:$dept_user.user_name/})</OPTION>{OVOV:/foreach/}</SELECT>&nbsp;<span class="xspan">*请选择部门经理</span></td>
+            </tr>
+
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;部门描述：</td>
+              <td align="left" width="80%" >&nbsp;<textarea name="de_intro" id="de_intro" class="textarea"></textarea>&nbsp;<span class="xspan">*部门描述说明</span></td>
+            </tr>
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;</td>
+              <td align="left" width="80%" colspan="2">&nbsp;
+                <INPUT class="but_add" type=submit value=" " name="Department_New_submit" id="Department_New_submit"></td>
+            </tr>
+          </table></form>
+         </div>
+    </div>
+    <!--部门添加e--> 
+    <!--部门修改b-->
+    <div class="contents" {OVOV:if $claid eq 22/}style="display:block"{OVOV:/if/}>
+        <div><form action="ovoa.php?action=Ovoa_Department_Edit_Dosave&claid=999&dpxg_id={OVOV:$dpxg_id/}" method="post" name="Department_New" id="Department_New" enctype="multipart/form-data">
+          <table width="100%" border="0" cellspacing="1" cellpadding="0" style="background:#d5dde0;" class="table_font">
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;部门名称：</td>
+              <td align="left" width="80%" >&nbsp;<INPUT class="s_sear" type=text name="de_name" id="de_name" value="{OVOV:$department_xg.de_name/}">&nbsp;<span class="xspan">*部门名称</span></td>
+            </tr>
+              <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;部门人员：</td>
+              <td align="left" width="80%" >&nbsp;<SELECT id="de_jingli" name="de_jingli">{OVOV:if $dpt_xg_user/} {OVOV:foreach from=$dpt_xg_user item=dpt_xg_user/}<OPTION value={OVOV:$dpt_xg_user.user_id/} {OVOV:if $department_xg.de_jingli eq $dpt_xg_user.user_id/} selected{OVOV:/if/}>{OVOV:$dpt_xg_user.user_ture_name/}({OVOV:$dpt_xg_user.user_name/})</OPTION>{OVOV:/foreach/}{OVOV:else/}<OPTION selected value=0>该部门下没有人员</OPTION>{OVOV:/if/}</SELECT>&nbsp;<span class="xspan">*请选择部门经理</span></td>
+            </tr>
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;部门描述：</td>
+              <td align="left" width="80%" >&nbsp;<textarea name="de_intro" id="de_intro" class="textarea">{OVOV:$department_xg.de_intro/}</textarea>&nbsp;<span class="xspan">*部门描述说明</span></td>
+            </tr>
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;</td>
+              <td align="left" width="80%" colspan="2">&nbsp;
+                <INPUT class="but_modfy" type=submit value=" " name="Department_New_submit" id="Department_New_submit"></td>
+            </tr>
+          </table></form>
+         </div>
+    </div>
+    <!--部门修改e--> 
+    <!--权限管理b-->
+    <div class="contents" {OVOV:if $claid eq 3/}style="display:block"{OVOV:/if/}>
+    <div><a href="ovoa.php?action=Ovoa_Quanxian_New&claid=31" class="s"><img src="common/skin/1/images/add.gif" /></a></div>
+        <div> <table width="100%" border="0" cellspacing="1" cellpadding="0" style="background:#d5dde0;" class="table_font">
+            <tr style="background:url(common/skin/1/images/table_title.gif) repeat-x;">
+                <td height="32" align="center">ID号</td>
+                <td align="center">权限名称</td>
+                <td align="center">权限说明</td>
+                <td align="center">操作</td>
+            </tr>
+          {OVOV:foreach from=$quanxian_list item=quanxian_list/}
+          <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);"  height="32" >
+            <td align="center">{OVOV:$quanxian_list.qx_id/}</td>
+            <td align="center">{OVOV:$quanxian_list.qx_name/}</td>
+            <td style="text-align:left; padding-left:10px;">{OVOV:$quanxian_list.qx_explain/}</td>
+            <td align="center" ><a href="ovoa.php?action=Ovoa_Quanxian_DIY&diyqx_id={OVOV:$quanxian_list.qx_id/}&claid=33">自定义权限</a>&nbsp;&nbsp;&nbsp;<a href="ovoa.php?action=Ovoa_Quanxian_Edit&qxxg_id={OVOV:$quanxian_list.qx_id/}&claid=32">修改</a>&nbsp;&nbsp;&nbsp;<a onClick="del_quanxian('{OVOV:$quanxian_list.qx_id/}')" href="#">删除</a></td>
+          </tr>
+      {OVOV:/foreach/}
+       </table>
+         </div>
+        </div>
+    <!--权限管理e-->
+    <!--权限添加b-->
+    <div class="contents" {OVOV:if $claid eq 31/}style="display:block"{OVOV:/if/}>
+    <div><form action="ovoa.php?action=Do_Ovoa_Quanxian_New&claid=999" method="post" name="Quanxian_New" id="Quanxian_New" enctype="multipart/form-data">
+          <table width="100%" border="0" cellspacing="1" cellpadding="0" style="background:#d5dde0;" class="table_font">
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;权限名称：</td>
+              <td align="left" width="80%" >&nbsp;<INPUT class="s_sear" type=text name="qx_name" id="qx_name">&nbsp;<span class="xspan">*权限名称</span></td>
+            </tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;权限说明：</td>
+              <td align="left" width="80%" >&nbsp;<textarea name="qx_explain" id="qx_explain" class="textarea">{OVOV:$quanxian.qx_explain/}</textarea>&nbsp;<span class="xspan">*权限说明</span></td>
+            </tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;</td>
+              <td align="left" width="80%" colspan="2">&nbsp;
+                <INPUT class="but_add" type=submit value=" " name="Quanxian_New_submit" id="Quanxian_New_submit"></td>
+            </tr>
+			</table></form>		
+	</div>
+    </div> 
+    <!--权限添加e-->
+    <!--权限修改b-->
+    <div class="contents" {OVOV:if $claid eq 32/}style="display:block"{OVOV:/if/}>
+    <div><form action="ovoa.php?action=Do_Ovoa_Quanxian_Edit&claid=999&qxxg_id={OVOV:$quanxian_edit_id/}" method="post" name="Quanxian_Edit" id="Quanxian_Edit" enctype="multipart/form-data">
+          <table width="100%" border="0" cellspacing="1" cellpadding="0" style="background:#d5dde0;" class="table_font">
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;权限名称：</td>
+              <td align="left" width="80%" >&nbsp;<INPUT class="s_sear" type=text name="qx_name" id="qx_name" value="{OVOV:$quanxian_edit.qx_name/}">&nbsp;<span class="xspan">*权限名称</span></td>
+            </tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;权限说明：</td>
+              <td align="left" width="80%" >&nbsp;<textarea name="qx_explain" id="qx_explain" class="textarea">{OVOV:$quanxian_edit.qx_explain/}</textarea>&nbsp;<span class="xspan">*权限说明</span></td>
+            </tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;</td>
+              <td align="left" width="80%" colspan="2">&nbsp;
+                <INPUT class="but_modfy" type=submit value=" " name="Quanxian_New_submit" id="Quanxian_New_submit"></td>
+            </tr>
+			</table></form>
+	</div>
+	</div> 
+    <!--权限修改e-->
+	<!--自定义权限修改b-->
+    <div class="contents" {OVOV:if $claid eq 33/}style="display:block"{OVOV:/if/}>
+    <div></div>
+	 </div>
+	<!--自定义权限修改e-->
+    <!--栏目添加b-->
+    <div class="contents" {OVOV:if $claid eq 11/}style="display:block"{OVOV:/if/}>
+      <div>
+        <form action="ovoa.php?action=Do_Ovoa_Channel" method="post" name="rstform_lm" id="rstform_lm" enctype="multipart/form-data">
+          <table width="100%" border="0" cellspacing="1" cellpadding="0" style="background:#d5dde0;" class="table_font">
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;所属大分类：</td>
+              <td align="left" width="80%" >&nbsp;
+                <SELECT id="channel_root_id" name="channel_root_id">
+                  <OPTION selected value=0>所属分类</OPTION>{OVOV:foreach from=$channel item=channel/}
+                  <OPTION value={OVOV:$channel.channel_id/} {OVOV:if $channel_top_id eq $channel.channel_id/} selected {OVOV:/if/}>{OVOV:$channel.channel_name/}</OPTION>
+            {OVOV:/foreach/}</SELECT>
+                &nbsp;<span class="xspan">*所属大分类</span></td>
+            </tr>
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;子分类名称：</td>
+              <INPUT class=text type=hidden name="jibie" id="jibie" value="{OVOV:$jibie/}">
+              <td align="left" width="80%" >&nbsp;
+                <INPUT class="s_sear" type=text name="channel_name" id="channel_name">
+                &nbsp;<span class="xspan">*子分类名称</span></td>
+            </tr>
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;传值参数名：</td>
+              <td align="left" width="80%" >&nbsp;
+                <INPUT class="u_input320" type=text name="channel_ename" id="channel_ename">&nbsp;<span class="xspan">*参数只能为字母，数字，下划线</span></td>
+            </tr>
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;子分类链接：</td>
+              <td align="left" width="80%" >&nbsp; <INPUT class="u_input320" type=text name="channel_urlname" id="channel_urlname" value="{OVOV:$channel.channel_urlname/}">&nbsp;<span class="xspan">*子分类链接</span></td>
+            </tr>
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;子分类模板：</td>
+              <td align="left" width="80%" >&nbsp; <INPUT class="u_input320" type=text name="mbname" id="mbname" value="{OVOV:$channel.mbname/}">&nbsp;<span class="xspan">*子分类模板</span></td>
+            </tr>
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;分类排序ID：</td>
+              <td align="left" width="80%" >&nbsp; <INPUT class="u_input80"  type=text name="channel_order" id="channel_order" value="{OVOV:$num/}"> &nbsp;<span class="xspan">*按数字大小顺序排序</span>&nbsp;<input type="checkbox" name="channel_istop" id="channel_istop"  value="1" > 在顶部导航显示 <input type="checkbox" name="isdesk" id="isdesk"  value="1"> 在我的工作台显示</td>
+            </tr>
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;数据统计参数：</td>
+              <td align="left" width="80%" >&nbsp; <INPUT class="u_input600" type=text name="tjchar" id="tjchar" value="">&nbsp;<span class="xspan">*（表名，主键名，条件语句）</span></td>
+            </tr>
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;工作台图标：</td>
+              <td align="left" width="80%" ><table>
+                  <tr>
+                    <td>&nbsp;
+                      <INPUT type=text name="channel_ico" id="channel_ico" class="u_input320" value="{OVOV:$user.user_photo/}" ></td>
+                    <td><iframe name="file_upload" src="upload.php?action=new_ovoafile&isReturn=true&dizhi=channel_ico&rstform=rstform_lm" scrolling="no" frameborder="0" id="upload_file_iframe" style="height:28px; padding-top:0px;"></iframe></td>
+                  </tr>
+                </table></td>
+            </tr>
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;子分类简介：</td>
+              <td align="left" width="80%" >&nbsp;
+                <textarea class="textarea" name="intro_meo" id="intro_meo" style="width:600px; height:400px;"></textarea></td>
+            </tr>
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;</td>
+              <td align="left" width="80%" colspan="2">&nbsp;
+                <INPUT class="but_add" type=submit value=" " name="channel_add_submit" id="channel_add_submit"></td>
+            </tr>
+          </table>
+        </form>
+      </div>
+    </div>
+    <!--栏目添加e-->
+    <!--栏目修改b-->
+    <div class="contents" {OVOV:if $claid eq 12/}style="display:block"{OVOV:/if/}>
+      <div>
+        <form action="ovoa.php?action=Do_Ovoa_Channel_Edit&Channel_xg_id={OVOV:$Channel_xgid/}" method="post" name="rstform_lmxg" id="rstform_lmxg" enctype="multipart/form-data">
+          <table width="100%" border="0" cellspacing="1" cellpadding="0" style="background:#d5dde0;" class="table_font">
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;所属大分类：</td>
+              <td align="left" width="80%" >&nbsp;
+                <SELECT id="channel_root_id" name="channel_root_id"><OPTION selected value=0>所属分类</OPTION>{OVOV:section name=d loop=$xg_channel/}<OPTION value={OVOV:$xg_channel[d].channel_id/} {OVOV:if $xg_channel[d].channel_id eq $xg_set_channel.channel_root_id/} selected {OVOV:/if/}>{OVOV:$xg_channel[d].channel_name/}</OPTION>
+             {OVOV:section name=x loop=$xg_channel2/}{OVOV:if $xg_channel2[x].channel_root_id == $xg_channel[d].channel_id/} <OPTION value={OVOV:$xg_channel2[x].channel_id/} {OVOV:if $xg_channel2[x].channel_id eq $xg_set_channel.channel_root_id/} selected {OVOV:/if/}>&nbsp;&nbsp;&nbsp;&nbsp;|--{OVOV:$xg_channel2[x].channel_name/}</OPTION>
+                 {OVOV:section name=xx loop=$xg_channel3/}{OVOV:if $xg_channel3[xx].channel_root_id == $xg_channel2[x].channel_id/}<OPTION value={OVOV:$xg_channel3[xx].channel_id/} {OVOV:if $xg_channel3[xx].channel_id eq $xg_set_channel.channel_root_id/} selected {OVOV:/if/}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--{OVOV:$xg_channel3[xx].channel_name/}</OPTION>
+                  {OVOV:/if/} {OVOV:/section/} {OVOV:/if/}{OVOV:/section/}{OVOV:/section/} </SELECT>
+                &nbsp;<span class="xspan">*所属大分类</span></td>
+            </tr>
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;子分类名称：</td>
+             <INPUT class=text type=hidden name="channel_kid" id="channel_kid" value="{OVOV:$channel_kid/}">
+       		 <INPUT class=text type=hidden name="jibie" id="jibie" value="{OVOV:$jibie/}">
+              <td align="left" width="80%" >&nbsp;
+                <INPUT class="s_sear" type=text name="channel_name" id="channel_name" value="{OVOV:$xg_set_channel.channel_name/}">
+                &nbsp;<span class="xspan">*子分类名称</span></td>
+            </tr>
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;传值参数名：</td>
+              <td align="left" width="80%" >&nbsp;
+                <INPUT class="u_input320" type=text name="channel_ename" id="channel_ename" value="{OVOV:$xg_set_channel.channel_ename/}">
+                &nbsp;<span class="xspan">*参数只能为字母，数字，下划线</span></td>
+            </tr>
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;子分类链接：</td>
+              <td align="left" width="80%" >&nbsp;
+                <INPUT class="u_input320" type=text name="channel_urlname" id="channel_urlname" value="{OVOV:$xg_set_channel.channel_urlname/}">
+                &nbsp;<span class="xspan">*
+                <input type="checkbox" name="qingyong" id="qingyong"  value="1" {OVOV:if $xg_set_channel.channel_urlok/} checked{OVOV:/if/}>
+                是否启用转向链接</span></td>
+            </tr>
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;子分类模板：</td>
+              <td align="left" width="80%" >&nbsp;
+                <INPUT class="u_input320" type=text name="mbname" id="mbname" value="{OVOV:$xg_set_channel.mbname/}">
+                &nbsp;<span class="xspan">*子分类模板</span></td>
+            </tr>
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;分类排序ID：</td>
+              <td align="left" width="80%" >&nbsp; <INPUT class="u_input80"  type=text name="channel_order" id="channel_order" value="{OVOV:$xg_set_channel.channel_order/}">&nbsp;<span class="xspan">*按数字大小顺序排序</span>&nbsp;<input type="checkbox" name="channel_istop" id="channel_istop"  value="1" {OVOV:if $xg_set_channel.channel_istop/} checked{OVOV:/if/}> 在顶部导航显示 <input type="checkbox" name="isdesk" id="isdesk"  value="1" {OVOV:if $xg_set_channel.isdesk/} checked{OVOV:/if/}> 在我的工作台显示</td>
+            </tr>
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;数据统计参数：</td>
+              <td align="left" width="80%" >&nbsp;
+                <INPUT class="u_input600"  type=text name="tjchar" id="tjchar" value="{OVOV:$xg_set_channel.tjchar/}">
+                &nbsp;<span class="xspan">*（表名，主键名，条件语句）</span></td>
+            </tr>
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;工作台图标：</td>
+              <td align="left" width="80%" ><table>
+                  <tr>
+                    <td>&nbsp;
+                      <INPUT type=text name="channel_ico" id="channel_ico" class="u_input320" value="{OVOV:$xg_set_channel.channel_ico/}" ></td>
+                    <td><iframe name="file_upload" src="upload.php?action=new_ovoafile&isReturn=true&dizhi=channel_ico&rstform=rstform_lmxg" scrolling="no" frameborder="0" id="upload_file_iframe" style="height:28px; padding-top:0px;"></iframe></td>
+                  </tr>
+                </table></td>
+            </tr>
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;子分类简介：</td>
+              <td align="left" width="80%" >&nbsp;
+                <textarea class="textarea" name="intro_meo" id="intro_meo" style="width:600px; height:400px;">{OVOV:$xg_set_channel.intro_meo/}</textarea></td>
+            </tr>
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;</td>
+              <td align="left" width="80%" colspan="2">&nbsp;
+                <INPUT class="but_modfy" type=submit value=" " name="channel_add_submit" id="channel_add_submit"></td>
+            </tr>
+          </table>
+        </form>
+      </div>
+    </div>
+    <!--栏目修改e--> 
+    <!--栏目排序b--> 
+     <div class="contents" {OVOV:if $claid eq 13/}style="display:block"{OVOV:/if/}>
+      <div>
+        <form action="ovoa.php?action=Ovoa_Channel_Paixu_Do&pxid={OVOV:$Ovoa_Channel_Paixu_id/}" method="post" name="rstform_paxu" id="rstform_paxu" enctype="multipart/form-data">
+          <table width="100%" border="0" cellspacing="1" cellpadding="0" style="background:#d5dde0;" class="table_font">
+            <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;排序数字：</td>
+              <td align="left" width="80%" >&nbsp;<INPUT name="neworder"  type=text class="u_input80" id="neworder" value="{OVOV:$oid/}" size="4"> &nbsp;<span class="xspan">*按数字顺序排序</span></td>
+            </tr>
+              <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+              <td height="32" align="center" width="10%">&nbsp;</td>
+              <td align="left" width="80%" colspan="2">&nbsp;
+                <INPUT class="but_modfy" type=submit value=" " name="channel_paixu_submit" id="channel_paixu_submit"></td>
+            </tr>
+		</table></form>
+        </div></div>
+    <!--栏目排序e--> 
+	<!--基础数据b-->
+    <div class="contents" {OVOV:if $claid eq 4/}style="display:block"{OVOV:/if/}>
+      <div>
+	  </div>
+	</div>
+	<!--基础数据b-->
+  </div>
+</div>
+</body>
+</html>

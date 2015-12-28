@@ -1,0 +1,50 @@
+{OVOV:include file="ovov_sys/ovoa_header.html"/}
+<body>
+<script>
+function listBgOver(obj){
+	obj.style.background="#E8F4FF";
+}
+function listBgOut(obj){
+	obj.style.background="#FFFFFF";
+}
+</script>
+	<div class="main">
+	<div class="main_title"><strong>留言详情</strong></div>
+  		<div class="contents" style="display:block">
+			<table width="100%" border="0" cellspacing="1" cellpadding="0" style="background:#d5dde0;" class="table_font">
+				<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+					<td height="32" align="center" width="10%">&nbsp;姓名：</td>
+					<td align="left" width="90%" >
+					&nbsp;<INPUT class="u_input320" type="text" value="{OVOV:$see.fd_name/}"/>
+					</td>
+				</tr>
+				<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+					<td height="32" align="center" width="10%">&nbsp;邮箱：</td>
+					<td align="left" width="90%" >
+					&nbsp;<INPUT class="u_input320" type="text" value="{OVOV:$see.fd_email/}"/>
+					</td>
+				</tr>
+				<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+					<td height="32" align="center" width="10%">&nbsp;手机：</td>
+					<td align="left" width="90%" >
+					&nbsp;<INPUT class="u_input320" type="text" value="{OVOV:$see.fd_phone/}"/>
+					</td>
+				</tr>
+
+				<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+					<td height="32" align="center" width="10%">&nbsp;留言：</td>
+					<td align="left" width="90%" style="padding-left:7px;">
+					<textarea style="width:400px;height:200px;">{OVOV:$see.fd_content/}</textarea>
+					</td>
+				</tr>
+				<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">   
+					<td height="32" align="center" width="10%"></td>       
+					<td align="left" width="90%" colspan="2">
+						&nbsp;<INPUT class="but_back" type="button" onclick="javascript:history.go(-1);"/>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</body>
+</html>

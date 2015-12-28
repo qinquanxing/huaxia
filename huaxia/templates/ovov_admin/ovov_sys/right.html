@@ -1,0 +1,15 @@
+{OVOV:include file="ovov_sys/ovoa_header.html"/}
+<body>
+<div class="main">
+	<div class="main_title"><strong>我的工作台</strong><span></span><p></p></div>
+    <div class="main_content">
+    	<ul class="indexul">
+		{OVOV:foreach from=$mydesk item=mydesk key=k name=mydesk/}{OVOV:if $mydesk.channel_id|in_array:$user_view || $mydesk.channel_id|in_array:$user_cview/}<li><div><a href="{OVOV:if $mydesk.channel_urlok/}{OVOV:$mydesk.channel_urlname/}{OVOV:else/}{OVOV:$mydesk.channel_urlname/}?action={OVOV:$mydesk.channel_ename/}&cid={OVOV:$mydesk.channel_id/}{OVOV:/if/}" target="right" ><img src="{OVOV:$mydesk.channel_ico/}" /></a><br /><a href="{OVOV:if $mydesk.channel_urlok/}{OVOV:$mydesk.channel_urlname/}{OVOV:else/}{OVOV:$mydesk.channel_urlname/}?action={OVOV:$mydesk.channel_ename/}&cid={OVOV:$mydesk.channel_id/}{OVOV:/if/}" target="right">{OVOV:$mydesk.channel_name/}</a>{OVOV:if $mydesk.mynums/}<strong>{OVOV:$mydesk.mynums/}</strong>{OVOV:/if/}</div></li>
+		{OVOV:/if/}{OVOV:/foreach/}
+        </ul>
+        <div class="fd zx"></div><div class="fd yx"></div>
+    </div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,278 @@
+{OVOV:include file="ovov_sys/ovoa_header.html"/}
+<script language="javascript" type="text/javascript" src="common/rili/WdatePicker.js"></script>
+<script language="javascript" type="text/javascript">
+	function listBgOver(obj){
+		obj.style.background="#E8F4FF";
+	}
+	function listBgOut(obj){
+		obj.style.background="#FFFFFF";
+	}
+	jQuery(function($) {
+		//标题不能为空
+		$("#user_name").focus();
+		$("#user_name").blur(function() {
+			aa();
+		});
+		//提交
+		$("#submit").click(function() {
+				if(aa()==false) {
+					//alert("用户登录名不能为空！");
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '用户登录名不能为空'
+               		});
+					return false;
+				}
+				//考勤号码是否为空
+				if($("#kqid").val()==''){
+					$("#kqid").focus();
+					$("#kqid").attr("style","border:#F00 solid 1px;");
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '考勤号码不能为空'
+               		});
+					return false;
+				}
+				//输入密码是否为空
+				if($("#user_password1").val()==''){
+					$("#user_password1").focus();
+					$("#user_password1").attr("style","border:#F00 solid 1px;");
+					//alert("密码不能为空");
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '密码不能为空'
+               		});
+					return false;
+				}
+				//确认输入密码是否为空
+				if($("#user_password2").val()==''){
+					$("#user_password2").focus();
+					$("#user_password2").attr("style","border:#F00 solid 1px;");
+					//alert("确认密码不能为空");
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '确认密码不能为空'
+               		});
+					return false;
+				}
+				//两次输入密码是否一致
+				if($("#user_password1").val()!=$("#user_password2").val()){
+					$("#user_password1").focus();
+					$("#user_password1").attr("style","border:#F00 solid 1px;");
+					//alert("两次输入密码不一致！");
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '两次输入密码不一致'
+               		});
+					return false;
+				}
+				//真实姓名不能为空
+				if($("#user_ture_name").val()==''){
+					$("#user_ture_name").focus();
+					$("#user_ture_name").attr("style","border:#F00 solid 1px;");
+					//alert("真实姓名不能为空");
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '真实姓名不能为空'
+               		});
+					return false;
+				}
+				//职位名称不能为空
+					if($("#user_position").val()==''){
+					$("#user_position").focus();
+					$("#user_position").attr("style","border:#F00 solid 1px;");
+					//alert("职位名称不能为空");
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '职位名称不能为空'
+               		});
+
+					return false;
+				}
+
+			});
+		});
+function aa(){
+			if($("#user_name").val()==''){
+				$("#user_name").attr("style","border:#F00 solid 1px;");
+				//alert("用户名不能为空");
+				return false;
+			}else{
+				$("#user_name").attr("style","");
+				return true;
+			}	
+	
+}
+
+</script>
+<body>
+<div class="main">
+  <div class="main_title"><a href="user.php"><strong>用户管理</strong></a> <strong>修改用户资料</strong><span></span>
+    <p></p>
+  </div>
+  <div class="main_content">
+
+  <!--添加用户b-->
+ 
+  <div class="contents" style="display:block">
+   
+    <div><form action="user.php?action=do_set_user&id={OVOV:$user.user_id/}" name="rstform" id="rstform" method="post" enctype="multipart/form-data">
+        <table width="100%" border="0" cellspacing="1" cellpadding="0" style="background:#d5dde0;" class="table_font">
+          <tr style="background:url(common/skin/1/images/table_title.gif) repeat-x;">
+            <td align="center" colspan="2" height="32">&nbsp;修改用户&nbsp;&nbsp;<INPUT class="but_modfy" type=submit value=" " name="submit" id="submit"></td>
+          </tr>
+ 			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+		   <td height="32" align="center" width="10%">&nbsp;用 户 名：</td>
+            <td align="left" width="90%" >&nbsp;<input type="hidden" name="url_from" id="url_from" value="{OVOV:$url_from/}"><INPUT class="s_sear" type=text name="user_name" id="user_name" value="{OVOV:$user.user_name/}" {OVOV:if $qx_id>1 /}readonly{OVOV:/if/} >&nbsp;<span class="xspan">*系统登录的用户名</span></td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;考勤号码：</td>
+			<td align="left" width="90%" >&nbsp;<INPUT class="s_sear" type=text name="kqid" id="kqid" value="{OVOV:$user.kqid/}" >&nbsp;<span class="xspan">*指纹打卡机ID</span></td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;用户密码：</td>
+			<td align="left" width="90%" >&nbsp;<INPUT class="s_sear"  type="password" name="user_password1" id="user_password1">&nbsp;<span class="xspan">*系统登录的密码</span></td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;确认密码：</td>
+			<td align="left" width="90%" >&nbsp;<INPUT class="s_sear"  type="password" name="user_password2"id="user_password2">&nbsp;<span class="xspan">*再次输入密码</span></td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;真实姓名：</td>
+			<td align="left" width="90%" >&nbsp;<INPUT class="s_sear" type=text name="user_ture_name" id="user_ture_name" value="{OVOV:$user.user_ture_name/}" >&nbsp;<span class="xspan">*真实姓名不能为空</span></td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;用户权限：</td>
+			<td align="left" width="90%" >&nbsp;<select id="user_quanxian" name="user_quanxian" >
+										{OVOV:foreach from=$quanxian item=quanxian/}
+										<option value="{OVOV:$quanxian.qx_id/}" {OVOV:if $user.user_quanxian eq $quanxian.qx_id/}selected{OVOV:/if/} >{OVOV:$quanxian.qx_name/}</option>
+										{OVOV:/foreach/}
+										</select>&nbsp;<span class="xspan">*用户的使用权限</span></td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;所在部门：</td>
+			<td align="left" width="90%" >&nbsp;<select id="user_right" name="user_right" >
+										{OVOV:foreach from=$department item=department/}
+										<option value="{OVOV:$department.de_id/}" {OVOV:if $user.user_right eq $department.de_id/}selected{OVOV:/if/}>{OVOV:$department.de_name/}</option>
+										{OVOV:/foreach/}
+										</select>&nbsp;<span class="xspan">*所在部门</span></td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;职位名称：</td>
+			<td align="left" width="90%" >&nbsp;<select id="user_position" name="user_position">{OVOV:foreach from=$user_position item=position/}<option value="{OVOV:$position.channel_id/}" {OVOV:if $user.user_position eq $position.channel_id/}selected{OVOV:/if/}>{OVOV:$position.channel_name/}</option>{OVOV:/foreach/}</select>&nbsp;<span class="xspan">*<a href="channel.php?sid=141&jibie=3&action=add_sort">设置职位名称</a></span></td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;工位编号：</td>
+			<td align="left" width="90%" >&nbsp;<INPUT class="s_sear"  type=text name="user_bianhao" id="user_bianhao" value="{OVOV:$user.user_bianhao/}" {OVOV:if $qx_id>1/}readonly{OVOV:/if/} >&nbsp;<span class="xspan">*工位编号,如：<a href="javascript:void(0);" onClick="document.rstform.user_bianhao.value='OV1000';">OV1000</a>,<a href="javascript:void(0);" onClick="document.rstform.user_bianhao.value='OV1001';">OV1001</a>,<a href="javascript:void(0);" onClick="document.rstform.user_bianhao.value='OV1002';">OV1002</a>,<a href="javascript:void(0);" onClick="document.rstform.user_bianhao.value='OV1003';">OV1003</a></span></td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;性　　别：</td>
+			<td align="left" width="90%" >&nbsp;<label><input name="user_sex" type="radio" id="user_sex" value="男" {OVOV:if $user.user_sex eq '男'/}checked{OVOV:/if/}> 男</label><label><input type="radio" name="user_sex" id="user_sex" value="女" {OVOV:if $user.user_sex eq '女'/}checked{OVOV:/if/}> 女</label>&nbsp;</td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;身份证号：</td>
+			<td align="left" width="90%" >&nbsp;<INPUT class="s_sear"  type=text name="user_sfz" id="user_sfz" value="{OVOV:$user.user_sfz/}"></td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;学　　历：</td>
+			<td align="left" width="90%" >&nbsp;<INPUT class="s_sear"  type=text name="user_edu" id="user_edu" value="{OVOV:$user.user_edu/}" ></td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;毕业学校：</td>
+			<td align="left" width="90%" >&nbsp;<INPUT class="s_sear"  type=text name="user_school" id="user_school" value="{OVOV:$user.user_school/}" ></td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;身高体重：</td>
+			<td align="left" width="90%" >&nbsp;身高：<INPUT class="s_sear" type=text name="user_height" id="user_height" value="{OVOV:$user.user_height/}" >
+			CM&nbsp; 体重：	<INPUT class="s_sear" type=text name="user_weight" id="user_weight" value="{OVOV:$user.user_weight/}"> KG</td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;户口性质：</td>
+			<td align="left" width="90%" >&nbsp;<INPUT class="s_sear" type=text name="user_school" id="user_school" value="{OVOV:$user.user_permanent/}" ></td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;工作经验：</td>
+			<td align="left" width="90%" >&nbsp;<INPUT class="s_sear" type=text name="user_workexperience" id="user_workexperience" value="{OVOV:$user.user_workexperience/}" ></td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;户籍地址：</td>
+			<td align="left" width="90%" >&nbsp;<INPUT class="u_input320" type=text name="user_permanent_add" id="user_permanent_add" value="{OVOV:$user.user_permanent_add/}"></td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;联系地址：</td>
+			<td align="left" width="90%" >&nbsp;<INPUT class="s_sear" type=text name="contact_add" id="contact_add" value="{OVOV:$user.contact_add/}"></td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;联系手机：</td>
+			<td align="left" width="90%" >&nbsp;<INPUT class="s_sear" type=text name="user_phone" id="user_phone" value="{OVOV:$user.user_phone/}"></td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;常 用 QQ：</td>
+			<td align="left" width="90%" >&nbsp;<INPUT class="s_sear" type=text name="user_qq" id="user_qq" value="{OVOV:$user.user_qq/}"></td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;常用邮箱：</td>
+			<td align="left" width="90%" >&nbsp;<INPUT class="s_sear" type=text name="user_email" id="user_email" value="{OVOV:$user.user_email/}"></td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;紧急联系人：</td>
+			<td align="left" width="90%" >&nbsp;<INPUT class="s_sear" type=text name="user_contact" id="user_contact" value="{OVOV:$user.user_contact/}"></td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;紧急联系人电话：</td>
+			<td align="left" width="90%" >&nbsp;<INPUT class="s_sear" type=text name="user_contact_tel" id="user_contact_tel" value="{OVOV:$user.user_contact_tel/}"></td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;入职日期：</td>
+			<td align="left" width="90%" >&nbsp;<INPUT class="s_sear" readonly type=text name="user_entrydate" id="user_entrydate" onClick="WdatePicker()" value="{OVOV:$user.user_entrydate/}"></td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;是否在职：</td>
+			<td align="left" width="90%" >&nbsp;<select id="inservice" name="inservice" ><option value="1" {OVOV:if $user.inservice eq 1/}selected{OVOV:/if/}>在职</option><option value="0" {OVOV:if $user.inservice eq 0/}selected{OVOV:/if/}>离职</option></select></td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;离职日期：</td>
+			<td align="left" width="90%" >&nbsp;<INPUT class="s_sear" readonly type=text name="quitstime" id="quitstime" onClick="WdatePicker()" value="{OVOV:$user.quitstime/}" ></td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;用户状态：</td>
+			<td align="left" width="90%" >&nbsp;<select id="user_state" name="user_state">{OVOV:foreach from=$user_state item=user_state/}<option value="{OVOV:$user_state.channel_id/}" {OVOV:if $user.user_state eq $user_state.channel_id/}selected{OVOV:/if/}>{OVOV:$user_state.channel_name/}</option>{OVOV:/foreach/}</select></td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;近期一寸照片：</td>
+			<td align="left" width="90%" ><table><tr><td>&nbsp;1<INPUT type=text name="user_photo" id="user_photo" class="u_input320" value="{OVOV:$user.user_photo/}" ></td><td><iframe name="file_upload" src="upload.php?action=new_ovoafile&isReturn=true&dizhi=user_photo&rstform=rstform" scrolling="no" frameborder="0" id="upload_file_iframe" style="height:28px; padding-top:0px;"></iframe></td></tr></table> </td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="150" align="center" width="10%">&nbsp;用户备注：</td>
+			<td align="left" width="90%" >&nbsp;<textarea class="texaare" name="user_remarks" id="user_remarks">{OVOV:$user.user_remarks/}</textarea></td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">   
+			<td height="32" align="center" width="10%">&nbsp;</td>       
+			<td align="left" width="90%" colspan="2">&nbsp;<INPUT class="but_modfy" type=submit value=" " name="submit" id="submit"></td>
+			</tr>
+		  </table>
+		  </form>
+	  </div>
+  </div>
+   <!--添加用户e-->
+
+  <div class="fd zx"></div>
+  <div class="fd yx"></div>
+</div>
+</div>
+</body>
+</html>

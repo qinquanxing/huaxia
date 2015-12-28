@@ -1,0 +1,157 @@
+{OVOV:include file="ovov_sys/ovoa_header.html"/}
+<script language="javascript" type="text/javascript">
+	function listBgOver(obj){
+		obj.style.background="#E8F4FF";
+	}
+	function listBgOut(obj){
+		obj.style.background="#FFFFFF";
+	}
+	jQuery(function($) {
+		//关键字不能为空
+		$("#guanjianzi").focus();
+		//搜索提交
+		$("#sqlkeywrod").click(function() {
+				if($("#guanjianzi").val()=='') {
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '关键字不能为空'
+               		});
+					$("#guanjianzi").focus();
+					return false;
+				}
+			});
+		})
+function checkAll(form){
+	for (var p=0;p<form.elements.length;p++){
+		var m = form.elements[p];
+			if (m.checked==false){
+				m.checked = true;
+			}
+			else{
+				m.checked = false;
+			}
+	}
+}
+function delAll(){
+	var string = "";
+	for (var i = 0 ; i<document.forms[0].elements.length-2 ; i++){
+		if(document.forms[0].elements[i].checked !=""){
+			if(i<(document.forms[0].elements.length - 3)){
+				string = string + document.forms[0].elements[i].value+",";
+			}else{
+				string = string + document.forms[0].elements[i].value;
+			}
+		}
+	}
+	if(string == ""){
+		art.dialog.alert('请选择采集任务');
+	}else{
+		art.dialog({
+			content: '确认删除这些采集任务？',
+			ok: function () {
+				location.href="collect.php?action=del&article_id="+string;
+		},
+		cancelVal: '关闭',
+		cancel: true //为true等价于function(){}
+		});
+	}
+}
+function set(mode,action,id,or_value){
+	var setvalue=prompt("请输入以下数字：\n其中‘1’代表‘是’，‘0’代表‘否’",or_value);
+	if(setvalue != "" && setvalue){
+	 art.dialog({
+   	 	content: '确认做此操作？',
+		ok: function () {
+			window.location.href="set.php?mode="+mode+"&action="+action+"&id="+id+"&value="+setvalue;
+    },
+    cancelVal: '关闭',
+    cancel: true //为true等价于function(){}
+	});
+		
+	}
+}
+function del(id){
+	art.dialog({
+   	 content: '确定删除此采集任务？',
+		ok: function () {
+			location.href = 'collect.php?action=del&article_id='+id;
+    },
+    cancelVal: '关闭',
+    cancel: true //为true等价于function(){}
+	});
+}
+function clear_lieurl(id){
+	art.dialog({
+   	 content: '确定要清空采集链接吗？',
+		ok: function () {
+			location.href = 'collect.php?action=del_lieurl&lid='+id;
+    },
+    cancelVal: '关闭',
+    cancel: true //为true等价于function(){}
+	});
+
+}
+
+function config(id,cosj){
+	art.dialog({
+   	 content: '采集列表链接可能需要浪费的较长的时间，请耐心等待，不要刷新本页面。确定要采集链接吗？',
+		ok: function () {
+			art.dialog.open('collect.php?action=config&article_id='+id+'&cosj='+cosj,{title: '正在采集链接',width: '50%',height:'300px'});
+    },
+    cancelVal: '关闭',
+    cancel: true //为true等价于function(){}
+	});
+
+}
+</script>
+<body>
+<div class="main">
+  <div class="main_title"><a href="collect.php?cid=11&action=add"><strong>采集管理</strong></a> <span></span>
+    <p></p>
+  </div>
+  <div class="main_content">
+  <!--文章管理b-->
+  <div class="contents" style="display:block">
+    <div><form name="channel_form"><table width="100%" border="0" cellspacing="1" cellpadding="0" style="background:#d5dde0;" class="table_font">
+  <tr height="32" align="center" bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+    <td>选择</td>
+    <td>ID</td>
+    <td>采集任务标题</td>
+    <td>所属情况/(频道-&gt;分类)</td>
+	<td>采集URL</td>
+    <td>网站编码</td>
+    <td>采集操作</td>
+    <td>操作 <a href="collect.php?action=add">添加采集任务</a></td>
+  </tr>{OVOV:foreach from=$article item=article/}
+  <tr height="32" align="center" bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+    <td><input type="checkbox" name="article" value="{OVOV:$article.id/}" /></td>
+    <td align=center>{OVOV:$article.id/}</td>
+    <td><a href="collect.php?action=edit&article_id={OVOV:$article.id/}">{OVOV:$article.cname/}</a></td>
+    <td><a href="collect.php?action=view&channel_id={OVOV:$article.article_ccid/}">{OVOV:$article.article_channel_name/}</a>-><a href="collect.php?action=view&channel_id={OVOV:$article.article_ccid/}&sort_id={OVOV:$article.article_csid/}">{OVOV:$article.article_sort_name/}</a></td>
+    <td>{OVOV:$article.idurl/}</td>
+	<td>{OVOV:$article.charset/}</td>
+	<td><a href="#" onClick="config('{OVOV:$article.id/}','{OVOV:$article.cosj/}');">开始采集链接</a>&nbsp;&nbsp;&nbsp;<a href="#" onClick="clear_lieurl('{OVOV:$article.id/}');">清空采集链接</a></td>
+    <td>&nbsp; <a href="collect.php?action=edit&article_id={OVOV:$article.id/}">修改</a> <a href="#" onClick="del('{OVOV:$article.id/}');">删除</a></td>
+  </tr>{OVOV:/foreach/}
+  <tr height="32" align="center" bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+    <td colspan="8"><input name="Submit" type="button" class="button" onClick="checkAll(this.form);" value="  全 选  " />
+    &nbsp; <input name="delall" type="button" class="button" id="delall" onClick="delAll();" value="  删 除 所 选  " /></td>
+  </tr>
+  <tr height="32" align="center" bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+    <td colspan="8"><a href="{OVOV:$page_frist/}">首页</a>&nbsp;<a href="{OVOV:$page_last/}">下一页</a>&nbsp; <a href="{OVOV:$page_pre/}">上一页</a>&nbsp;<a href="{OVOV:$page_final/}">尾页</a> 共{OVOV:$list_num/}记录{OVOV:$page_num/}页 当前第{OVOV:$page_now/}页</td>
+  </tr>
+</table>
+</form>  </div>
+<div>
+<form method="post" action="collect.php?action=chaxun" name="sqlkeywrod">
+	<table width="100%" border="0" height="45"><tr><td>
+&nbsp;采集任务搜索：&nbsp;<input type="radio" value="1" name="leibie" checked>&nbsp;ID &nbsp;<input type="radio" value="2" name="leibie">&nbsp;采集任务标题&nbsp;<input type="text" name="guanjianzi" id="guanjianzi" size="40">&nbsp;<input type="submit" value=" 搜 索 " name="sqlkeywrod" id="sqlkeywrod" class="button"></td></tr></table>		</form>
+  </div>	
+  </div>
+   <!--文章管理e-->
+</div>
+</div>
+</body>
+</html>

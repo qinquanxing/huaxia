@@ -1,0 +1,21 @@
+{OVOV:include file="ovov_sys/ovoa_header.html"/}
+<body>
+<div class="left">
+{OVOV:section name=menua loop=$menua/}
+{OVOV:if $menua[menua].channel_id|in_array:$user_cview/}
+    <dl>
+        <dt>{OVOV:$menua[menua].channel_name/}</dt>
+		{OVOV:section name=menub loop=$menub/}
+		{OVOV:if $menub[menub].channel_root_id eq $menua[menua].channel_id and $menub[menub].channel_id|in_array:$user_view/} {OVOV:if $menub[menub].channel_root_id eq 50/}
+        {OVOV:if $menub[menub].channel_id eq 55 or $menub[menub].channel_id eq 56 or $menub[menub].channel_id eq 59 or $menub[menub].channel_id eq 60/}
+         <dd><a href="{OVOV:if $menub[menub].channel_urlok/}{OVOV:$menub[menub].channel_urlname/}{OVOV:else/}{OVOV:$menub[menub].channel_urlname/}?cid={OVOV:$menub[menub].channel_id/}&action={OVOV:$menub[menub].channel_ename/}{OVOV:/if/}" target="right">{OVOV:$menub[menub].channel_name/}</a></dd>
+		{OVOV:/if/}{OVOV:else/}<dd><a href="{OVOV:if $menub[menub].channel_urlok/}{OVOV:$menub[menub].channel_urlname/}{OVOV:else/}{OVOV:$menub[menub].channel_urlname/}?cid={OVOV:$menub[menub].channel_id/}&action={OVOV:$menub[menub].channel_ename/}{OVOV:/if/}" target="right">{OVOV:$menub[menub].channel_name/}</a></dd>{OVOV:/if/}{OVOV:/if/}
+        {OVOV:/section/}
+       <!-- <dd class="bot"></dd>-->
+    </dl>
+{OVOV:/if/}
+{OVOV:/section/}
+</div>
+<div class="zhezhao" style="position:fixed; top:0; left:0;z-index:9999; width:100%;height:130%; background:#000; filter:alpha(opacity=70); opacity:0.7;display:none;margin-right:-50px;"></div>
+</body>
+</html>

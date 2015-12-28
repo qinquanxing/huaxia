@@ -1,0 +1,104 @@
+{OVOV:include file="ovov_sys/ovoa_header.html"/}
+<body>
+<script language="javascript" type="text/javascript">
+function listBgOver(obj){
+	obj.style.background="#E8F4FF";
+}
+function listBgOut(obj){
+	obj.style.background="#FFFFFF";
+}
+function del(id){
+	if(confirm('确定删除此留言？')){
+		location.href = 'feedback.php?action=do_del&id='+id;
+	}
+}
+
+function dset(id,act,val){
+	$.ajax({
+		url:'member.php?action='+act,
+		data:"id="+id+"&val="+val,
+		type:'POST',
+		success:function(responseData){
+			var Result = eval('('+responseData+')');
+			art.dialog({content: Result.infotxt,time:Result.time,lock: true,icon:Result.icon});
+			Result.staus==1?setTimeout('ovclose_dialog(1)',2000):"";
+		}
+	})
+}
+
+</script>
+<style>
+tr.lock td{
+	color:#ccc;	
+}
+</style>
+
+
+<div class="main">
+  <div class="main_title"><strong>会员管理</strong><span></span>
+    <p></p>
+  </div>
+	
+  <div class="main_content">
+ 	<div class="sub_title">
+		<ul>
+			<li {OVOV:if $action eq 'manage'/}class="tab_on"{OVOV:/if/}>
+				<a href="service.php?cid=69&action=service_manage">
+					<span>热线管理</span>
+				</a>
+			</li>
+
+			<li {OVOV:if $action eq 'add'/}class="tab_on"{OVOV:/if/}>
+				<a href="service.php?cid=69&action=service_add">
+					<span>热线添加</span>
+				</a>
+			</li>
+		</ul>
+	</div>
+	<form></form>
+	<div class="contents" style="display:block">
+      <form>
+        <table width="100%" border="0" cellspacing="1" cellpadding="0" style="background:#d5dde0;" class="table_font">
+          <tr style="background:url(common/skin/1/images/table_title.gif) repeat-x;">
+                <td height="32" align="center">ID</td>
+                <td align="center">开发名称</td>
+                <td align="center">图标</td>
+                <td align="center">热线电话</td>
+                <td align="center">添加时间</td>
+                <td align="center">操作</td>
+{OVOV:if $res/}
+{OVOV:foreach from=$res item=res/}
+          <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" {OVOV:if $res.is_lock eq 1/}class="lock"{OVOV:/if/}>
+                <td height="32" align="center"><input type="checkbox" name="check_id" value="{OVOV:$res.id/}"> {OVOV:$res.id/}</td>
+                <td height="32" align="center">{OVOV:$res.service_name/}</td>
+                <td height="32" align="center"><img src="../{OVOV:$res.service_img/}" width="80px" height="80px"/></td>
+                <td height="32" align="center">{OVOV:$res.service_tel/}</td>
+                <td height="32" align="center">{OVOV:$res.add_time|date_format:"%Y-%m-%d %H:%M:%S"/}</td>
+                <td align="center">
+                	<a onclick="dset({OVOV:$res.m_id/},'lockMember',{OVOV:$res.is_lock/})">{OVOV:if $res.is_lock/}[取消锁定]{OVOV:else/}[锁定]{OVOV:/if/}</a>
+                	<a onclick="dset({OVOV:$res.m_id/},'verifyMember',{OVOV:$res.is_verify/})">{OVOV:if $res.is_verify/}[取消审核]{OVOV:else/}[审核]{OVOV:/if/}</a>
+                	<a onclick="ajax_chanel('member.php?action=giveScore&id={OVOV:$res.m_id/}','赠送积分','800px','auto')">[送积分]</a>
+				</td>
+          </tr>
+{OVOV:/foreach/}
+
+		<tr height="32" align="center" bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+			<td colspan="11">
+				<input name="Submit" type="button" class="button" onClick="ov_checkAll(1);" value="  全 选  " />
+				&nbsp;<input name="delall" type="button" class="button" id="delall" onClick="ov_delall(1,'member.php','action=batchDelMember&bt_id=','确定删除？',0,2);" value="  删 除 所 选  " />
+			</td>
+		</tr>
+		<tr height="32" align="center" bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+			<td colspan="11">{OVOV:if $total/}{OVOV:$pagelist/}&nbsp;共{OVOV:$total/}记录{OVOV:$page_num/}页 当前第{OVOV:$page_now/}页{OVOV:/if/}</td>
+		</tr>
+		
+{OVOV:else/}
+          <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);"><td colspan="10" height="32" align="center">暂无任何消息！</td></tr>
+{OVOV:/if/}
+        </table>
+     </form>
+  </div>
+</div>
+</div>
+</body>
+</html>

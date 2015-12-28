@@ -1,0 +1,87 @@
+{OVOV:include file="ovov_sys/ovoa_header.html"/}
+<body>
+<script language="javascript" type="text/javascript">
+	function listBgOver(obj){
+		obj.style.background="#E8F4FF";
+	}
+	function listBgOut(obj){
+		obj.style.background="#FFFFFF";
+	}
+	function getSortList(){
+		$("#question_sort_div").html("<img src=\"common/skins/icons/loading.gif\">");
+		$.ajax({
+			url:'ajax.php?action=GetchanelList',
+			data:"pid="+$("#question_channel").val(),
+			type:'POST',
+			success:function(data){
+				$("#question_sort_div").html(data);
+			}
+		});
+	}
+	jQuery(function($) {
+		//第一步提交
+		$("#zhuanyi_add").click(function() {
+				//任务标题名称不能为空
+				if($("#question_channel").val()==''){
+					$("#question_channel").focus();
+					//$("#question_channel").addClass("s_sear_red");
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '任务类别不能为空'
+               		});
+					$("#question_channel").focus();
+					return false;
+				}
+				
+		});
+		})
+</script>
+<div class="main">
+  <div class="main_title"><strong>批量转移文章</strong><span></span>
+    <p></p>
+  </div>
+  <div class="main_content">
+  <!--批量转移文章b-->
+  <div class="contents" style="display:block">
+    <div>
+	<form action="question.php?action=do_question_zhuanyi" name="question_add_form" id="question_add_form" method="post" enctype="multipart/form-data" target="right">
+	<table width="100%" border="0" cellspacing="1" cellpadding="0" style="background:#d5dde0;" class="table_font">
+	  <tr>
+      <td width="103" height="22" bgcolor="#FFFFFF" style="padding-left:12px;" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">转移频道</td>
+      <td bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">&nbsp;{OVOV:$channel_list/}<span id="question_sort_div">{OVOV:if $setsort/}<select name="question_root_id" onChange="getSortList(this.form);">{OVOV:foreach from=$setsort item=setsort/}<option {OVOV:if $setquestion.csid==$setsort.channel_id/} selected="selected"{OVOV:/if/}
+ value="{OVOV:$setquestion.csid/}">{OVOV:$setsort.channel_name/}</option>{OVOV:/foreach/}</select>{OVOV:else/}{OVOV:/if/}</span></td>
+    </tr>
+	 <tr>
+      <td bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" height="23" style="padding-left:12px;">文章来源</td>
+      <td bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" height="23">&nbsp;
+        <input name="comfrom" type="text" id="comfrom" size="20" maxlength="255"/><input name="id" type="hidden" id="id" value="{OVOV:$id/}"/>
+        <span class="xspan"> *批量修改，如不修改请为空</span></td>
+	 </tr>
+	   <tr>
+      <td bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" height="23" style="padding-left:12px;">文章作者</td>
+      <td bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" height="19">&nbsp;
+        <input name="author" type="text" id="author" size="20" maxlength="255"/>
+        <span class="xspan"> *批量修改，如不修改请为空</span></td>
+	   </tr>
+<tr>
+      <td bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" height="23"  style="padding-left:12px;">添加时间</td>
+      <td bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" height="23" >&nbsp;
+        <input name="addsj" type="text" id="addsj" size="20" maxlength="255"/>
+        <span class="xspan">*批量修改，如不修改请为空</span></td>
+</tr>
+
+      <tr>
+      <td colspan="2" bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" height="32" style="padding-left:12px;text-align:center">
+	  <input name="zhuanyi_add" type="submit" class="button" id="zhuanyi_add" value="   确认转移   " /></td>
+    </tr>
+  </table>
+	</form>
+  </div>
+  </div>
+   <!--批量转移文章e-->
+</div>
+</div>
+</body>
+</html>

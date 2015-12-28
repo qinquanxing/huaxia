@@ -1,0 +1,196 @@
+{OVOV:include file="ovov_sys/ovoa_header.html"/}
+<script language="javascript" type="text/javascript">
+	function listBgOver(obj){
+		obj.style.background="#E8F4FF";
+	}
+	function listBgOut(obj){
+		obj.style.background="#FFFFFF";
+	}
+	jQuery(function($) {
+		//搜索提交
+		$("#sqlkeywrod").click(function() {
+				if($("#guanjianzi").val()=='') {
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '关键字不能为空'
+               		});
+					$("#guanjianzi").focus();
+					return false;
+				}
+			});
+		})
+function checkAll(form){
+	for (var p=0;p<form.elements.length;p++){
+		var m = form.elements[p];
+			if (m.checked==false){
+				m.checked = true;
+			}
+			else{
+				m.checked = false;
+			}
+	}
+}
+function delAll(){
+	var string = "";
+	for (var i = 0 ; i<document.forms[0].elements.length-2 ; i++){
+		if(document.forms[0].elements[i].checked !=""){
+			if(i<(document.forms[0].elements.length - 3)){
+				string = string + document.forms[0].elements[i].value+",";
+			}else{
+				string = string + document.forms[0].elements[i].value;
+			}
+		}
+	}
+	if(string == ""){
+		//alert("请选择采集链接！");
+		art.dialog.alert('请选择采集链接');
+	}else{
+		art.dialog({
+		 content: '确认删除这些采集链接？？',
+			ok: function () {
+				location.href = 'collect.php?action=delrenwu1&article_id='+string;
+		},
+		cancelVal: '关闭',
+		cancel: true //为true等价于function(){}
+		});
+	}
+}
+function set(mode,action,id,or_value){
+	var setvalue=prompt("请输入以下数字：\n其中'1'代表'是'，'0'代表'否'",or_value);
+	if(setvalue != "" && setvalue){
+		art.dialog({
+		 content: '确认做此操作？？',
+			ok: function () {
+				location.href = "set.php?mode="+mode+"&action="+action+"&id="+id+"&value="+setvalue;
+		},
+		cancelVal: '关闭',
+		cancel: true //为true等价于function(){}
+		});
+	}
+}
+function del(id){
+	art.dialog({
+   	 content: '确定删除此采集链接？？',
+		ok: function () {
+			location.href = 'collect.php?action=delrenwu1&article_id='+id;
+    },
+    cancelVal: '关闭',
+    cancel: true //为true等价于function(){}
+	});
+}
+function ifcollect(coid,id,url){
+	art.dialog({
+   	 content: '确定要采集吗？？？',
+		ok: function () {
+			art.dialog.open('collect.php?action=config2&cid='+coid+'&ccid='+id,{title: '正在采集内容',width: '50%',height:'200px',close: function(){location.href=url}});
+    },
+    cancelVal: '关闭',
+    cancel: true //为true等价于function(){}
+	});
+}
+
+function do_collect(id,cosj){
+	art.dialog({
+   	 	content: '批量采集，不能暂停，确定要开始采集吗？？',
+		ok: function () {
+		art.dialog.open('collect.php?action=config3&coid='+id+'&cosj='+cosj,{title: '正在采集链接',width: '50%',height:'200px'});
+    },
+    cancelVal: '关闭',
+    cancel: true //为true等价于function(){}
+	});
+}
+function do_recollect(id){
+	art.dialog({
+   	 content: '确定要清空，重新开始采集吗？？',
+		ok: function () {
+			location.href = 'collect.php?action=del_recollect&coid='+id;
+    },
+    cancelVal: '关闭',
+    cancel: true //为true等价于function(){}
+	});
+}
+
+function delrenwu(id){
+	art.dialog({
+   	 content: '清空采集链接，可能会造成重复采集！？\n\n确定清空此任务的采集链接？？',
+		ok: function () {
+			location.href = 'collect.php?action=delrenwu&article_id='+id;
+    },
+    cancelVal: '关闭',
+    cancel: true //为true等价于function(){}
+	});
+
+}
+
+</script>
+<body>
+<div class="main">
+  <div class="main_title"><a href="collect.php?cid=11&action=add"><strong>采集管理</strong></a> <span></span>
+    <p></p>
+  </div>
+  <div class="main_content">
+  <!--文章管理b-->
+  <div class="contents" style="display:block">
+    <div>
+    <table width="100%" border="0" cellspacing="1" cellpadding="0" style="background:#d5dde0;" class="table_font">
+   <tr height="32" align="center" bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+    <td width="3%">ID</td>
+    <td width="10%">采集任务标题</td>
+    <td width="25%">所属情况/(频道-&gt;分类)</td>
+	<td width="13%">已采集数量</td>
+    <td width="11%">未采集数量</td>
+    <td width="29%">操作 </td>
+  </tr>
+  {OVOV:foreach from=$renwulist item=renwu/}
+  <tr height="32" align="center" bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+    <td align=center>{OVOV:$renwu.id/}</td>
+    <td><a href="collect.php?action=edit&article_id={OVOV:$renwu.id/}">{OVOV:$renwu.cname/}</a></td>
+    <td><a href="collect.php?action=start&channel_id={OVOV:$renwu.cid/}">{OVOV:$renwu.ccname/}</a>-><a href="collect.php?action=start&channel_id={OVOV:$renwu.cid/}&sort_id={OVOV:$renwu.sid/}">{OVOV:$renwu.csname/}</a></td>
+    <td><font color="#800000">{OVOV:$renwu.ycno/}</font></td>
+	<td><font color="#008000">{OVOV:$renwu.ncno/}</font></td>
+    <td>&nbsp;<a href="#" onClick="do_collect('{OVOV:$renwu.id/}','{OVOV:$renwu.cosj/}');"><font color="#FF0000">开始采集</font></a>&nbsp; &nbsp;<a href="#" onClick="do_recollect('{OVOV:$renwu.id/}');"><font color="#008000">重新采集清空</font></a> &nbsp;&nbsp;  <a href="#" onClick="delrenwu('{OVOV:$renwu.id/}');">永久清空采集链接</a></td>
+  </tr>{OVOV:/foreach/}
+<tr class="lft_inf_title"><td colspan=6></td></tr>
+</table>
+<br>
+<table width="100%" border="0" cellspacing="1" cellpadding="0" style="background:#d5dde0;" class="table_font"><tr height="32" align="center" bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);"><td><b>采集任务链接列表</b></td></tr></table>
+<form name="channel_form"><table width="100%" border="0" cellspacing="1" cellpadding="0" style="background:#d5dde0;" class="table_font">
+  <tr height="32" align="center" bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+    <td width="5%">选择</td>
+    <td width="3%">ID</td>
+    <td width="10%">所属任务</td>
+	<td width="44%">采集URL</td>
+    <td width="10%">是否采集</td>
+    <td width="15%">操作 </td>
+  </tr>{OVOV:foreach from=$article item=article/}
+  <tr height="32" align="center" bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+    <td><input type="checkbox" name="article" value="{OVOV:$article.id/}" /></td>
+    <td align=center>{OVOV:$article.id/}</td>
+    <td><a href="collect.php?action=edit&article_id={OVOV:$article.col_id/}">{OVOV:$article.cname/}</a></td>
+    <td>{OVOV:$article.fullurl/}</td>
+	<td>{OVOV:$article.iscollect/}</td>
+    <td>&nbsp;<a href="#" onClick="ifcollect('{OVOV:$article.col_id/}','{OVOV:$article.id/}','collect.php?cid=13&action=start');" >采集</a> <a href="collect.php?action=edit&article_id={OVOV:$article.col_id/}">修改</a> <a href="#" onClick="del('{OVOV:$article.id/}');">删除</a></td>
+  </tr>{OVOV:/foreach/}
+  <tr height="32" align="center" bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+    <td colspan="6"><input name="Submit" type="button" class="button" onClick="checkAll(this.form);" value="  全 选  " />
+    &nbsp; <input name="delall" type="button" class="button" id="delall" onClick="delAll();" value="  删 除 所 选  " /></td>
+  </tr>
+  <tr height="32" align="center" bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+    <td colspan="6"><a href="{OVOV:$page_frist/}">首页</a>&nbsp;<a href="{OVOV:$page_last/}">下一页</a>&nbsp; <a href="{OVOV:$page_pre/}">上一页</a>&nbsp;<a href="{OVOV:$page_final/}">尾页</a> 共{OVOV:$list_num/}记录{OVOV:$page_num/}页 当前第{OVOV:$page_now/}页</td>
+  </tr>
+</table>
+</form>
+</div>
+<div>
+<form method="post" action="collect.php?action=chaxun" name="zhannei">
+	<table width="100%" border="0" height="45"><tr><td>
+&nbsp;采集任务搜索：&nbsp;<input type="radio" value="1" name="leibie" checked>&nbsp;ID &nbsp;<input type="radio" value="2" name="leibie">&nbsp;采集任务标题&nbsp;<input type="text" name="guanjianzi" id="guanjianzi" size="40">&nbsp;<input type="submit" value=" 搜 索 " name="sqlkeywrod" id="sqlkeywrod" class="button"></td></tr></table>		</form>
+  </div>	
+  </div>
+   <!--文章管理e-->
+</div>
+</div>
+</body>
+</html>

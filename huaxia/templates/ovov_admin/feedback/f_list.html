@@ -1,0 +1,60 @@
+{OVOV:include file="ovov_sys/ovoa_header.html"/}
+<body>
+<script language="javascript" type="text/javascript">
+function listBgOver(obj){
+	obj.style.background="#E8F4FF";
+}
+function listBgOut(obj){
+	obj.style.background="#FFFFFF";
+}
+function del(id){
+	if(confirm('确定删除此留言？')){
+		location.href = 'feedback.php?action=do_del&id='+id;
+	}
+}
+</script>
+<div class="main">
+  <div class="main_title"><strong>留言管理</strong><span></span>
+    <p></p>
+  </div>
+  <div class="main_content">
+	<div class="contents" style="display:block">
+        <table width="100%" border="0" cellspacing="1" cellpadding="0" style="background:#d5dde0;" class="table_font">
+          <tr style="background:url(common/skin/1/images/table_title.gif) repeat-x;">
+                <td height="32" align="center">ID</td>
+                <td align="center">姓名</td>
+                <td align="center">邮箱</td>
+                <td align="center">手机</td>
+                <td align="center">留言时间</td>
+                <td align="center">操作</td>
+          </tr>
+{OVOV:if $res/}
+{OVOV:foreach from=$res item=res/}
+          <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+                <td height="32" align="center">{OVOV:$res.fd_id/}</td>
+                <td height="32" align="center">{OVOV:$res.fd_name/}</td>
+                <td height="32" align="center">{OVOV:$res.fd_email/}</td>
+                <td height="32" align="center">{OVOV:$res.fd_phone/}</td>
+                <td height="32" align="center">{OVOV:$res.add_time/}</td>
+                <td align="center">
+                	<a href="feedback.php?action=do_see&id={OVOV:$res.fd_id/}">查看</a>
+                	<a onClick="del({OVOV:$res.fd_id/})" href="javascript:void(0);">删除</a>
+				</td>
+          </tr>
+{OVOV:/foreach/}
+{OVOV:else/}
+          <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);"><td colspan="8" height="32" align="center">暂无任何消息！</td></tr>
+{OVOV:/if/}
+        </table>
+		<br/>
+	<div class="page">
+	<span>
+{OVOV:if $total/}
+		第{OVOV:$page_now/}页/共{OVOV:$page_num/}页，共{OVOV:$total/}条</span> {OVOV:$pagelist/}
+{OVOV:/if/}
+	</div>
+  </div>
+</div>
+</div>
+</body>
+</html>

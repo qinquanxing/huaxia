@@ -1,0 +1,99 @@
+{OVOV:include file="ovov_sys/ovoa_header.html"/}
+<body>
+<div class="main">
+ 	<div id='db1' class="contents" style="display:block">
+ 	<a class="s" onclick="ajax_chanel('position.php?action=manage_add','新建','800px','320px')" href="javascript:void(0);">
+		<img src="common/skin/1/images/add.gif">
+	</a>
+    <form id="iform">
+        <table id='table_id' align='center' width="100%" border="0" cellspacing="1" cellpadding="0" style="background:#d5dde0;" class="table_font">
+          	<tr height="32" style="background:url(common/skin/1/images/table_title.gif) repeat-x;">
+				<td width="50px" align="center">选择</td>
+				<td align="center">用户ID</td>
+				<td align="center">注册类型</td>
+				<td align="center">密码</td>
+				<td align="center">电话</td>
+				<td align="center">邮箱</td>
+				<td align="center">状态</td>
+				<td align="center">添加时间</td>
+				<td align="center">邀请码</td>
+				<td align="center">验证码</td>
+				<td align="center" width="270px">操作</td>
+            </tr>
+{OVOV:if $res/}
+{OVOV:foreach from=$res item=res/}
+          	<tr height="32" bgcolor="#FFFFFF" align="center" onmouseout="listBgOut(this);" onmouseover="listBgOver(this);" {OVOV:if $res.is_show eq 0/}style="color:#cdcdcd";{OVOV:/if/} id="list">
+          		<td align="center"><input type="checkbox" value="{OVOV:$res.id/}" name="check_id" id="cbox"></td>
+		<td align="center">{OVOV:$res.id/}</td>
+		<td align="center">{OVOV:$res.reg_type/}</td>
+		<td align="center">{OVOV:$res.pwd/}</td>
+		<td align="center">{OVOV:$res.phone/}</td>
+		<td align="center">{OVOV:$res.email/}</td>
+		<td align="center">{OVOV:$res.state/}</td>
+		<td align="center">{OVOV:$res.addtime/}</td>
+		<td align="center">{OVOV:$res.invest_code/}</td>
+		<td align="center">{OVOV:$res.sms_code/}</td>
+		<td align="center">
+{OVOV:if $res.is_show eq 1/}
+			<a class="cz_btn" href="javascript:void(0);" onclick="ovajax_confirm('position.php','action=manage_show&id={OVOV:$res.id/}','确认取消显示')">取消显示</a>
+	{OVOV:else/}
+			<a class="cz_btn" href="javascript:void(0);" onclick="ovajax_confirm('position.php','action=manage_show&id={OVOV:$res.id/}&up=1','确认显示')">显示</a>
+	{OVOV:/if/}	
+			<a class="cz_btn" href="javascript:void(0);" onclick="ajax_chanel('position.php?action=manage_edit&id={OVOV:$res.id/}','修改','800px','320px')">修改</a>
+			<a class="cz_btn" href="javascript:void(0);" onclick="ovajax_confirm('position.php','action=manage_del&id={OVOV:$res.id/}','确认删除')">删除</a>
+			<!--ovajax_confirm('position.php','action=manage_del&id={OVOV:$res.id/}&up=1','确认删除')-->
+		</td>
+            </tr>
+{OVOV:/foreach/}
+	<tr height="32" bgcolor="#FFFFFF" align="center" onmouseout="listBgOut(this);" onmouseover="listBgOver(this);">
+		<td colspan="11">
+		<!-- <input class="button" type="button" value=" 全 选 " onclick="ov_checkAll('iform');" name="Submit"/>
+		<input id="delall" class="button" type="button" value=" 删 除 选 中 " onclick="ov_delall('iform','position.php?action=manage_delAll','gid=','确定要删除选中',0,2);"/> -->
+		<!-- <input type="checkbox" id="all">  -->
+		<input type="button" value="全选" class="btn" id="selectAll">   
+		<input type="button" value="全不选" class="btn" id="unSelect">   
+		<input type="button" value="反选" class="btn" id="reverse">   
+		<input type="button" value="获得选中的所有值" class="btn" id="getValue"> 
+		</td>
+	</tr>
+	<tr height="32" align="center" bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+	  <td colspan="13">{OVOV:$pagelist/}&nbsp;共{OVOV:$total/}记录{OVOV:$page_num/}页 当前第{OVOV:$page_now/}页
+  	</tr>
+{OVOV:else/}
+	<tr height="32" bgcolor="#FFFFFF" align="center" onmouseout="listBgOut(this);" onmouseover="listBgOver(this);">
+	  <td height=32 align="center" colspan="13">暂无数据</td>
+            </tr>
+{OVOV:/if/}
+		 </table>
+	 </form>
+  </div>
+</div>
+<script>
+$("#selectAll").click(function () { 
+   $("#cbox,#all").attr("checked", true);   
+}); 
+$("#unSelect").click(function () {   
+   $("#cbox,#all").attr("checked", false);   
+}); 
+$("#reverse").click(function () {  
+    // $("#cbox,#all").each(function () {   
+    //     $(this).attr("checked", !$(this).attr("checked"));   
+    // }); 
+    // allchk(); 
+    $("#cbox,#all").each(function () {   
+        $(this).attr("checked", !$(this).attr("checked"));   
+        alert(aa);
+    }); 
+    allchk(); 
+});
+$("#getValue").click(function(){ 
+    var valArr = new Array; 
+    $("#cbox,#all").each(function(i){ 
+        valArr[i] = $(this).val(); 
+    }); 
+    var vals = valArr.join(',');//转换为逗号隔开的字符串 
+    alert(vals); 
+}); 
+</script>
+</body>
+</html>

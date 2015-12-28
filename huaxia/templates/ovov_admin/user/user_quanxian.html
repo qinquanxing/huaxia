@@ -1,0 +1,101 @@
+{OVOV:include file="ovov_sys/ovoa_header.html"/}
+<script language="Javascript">  
+function cc(N,bool){  
+	for (var nn=0;nn<N;nn++){
+ 	 var aa=document.forms[nn].elements.length;
+ 	 for (var i=0; i<aa; i++){
+	 var m =document.forms[nn].elements[i];
+	 m.checked = bool==1 ? true : (bool==0 ? false : !m.checked);
+ 	}
+	}
+}
+function checkdan(nn,bool){
+	  var aa=document.forms[nn].elements.length;
+	  for (var i=0; i<aa; i++){
+	  		var m =document.forms[nn].elements[i];
+			m.checked = bool==1 ? true : (bool==0 ? false : !m.checked);
+		  }  
+	
+}
+function checkAll(form){
+	for (var p=0;p<form.elements.length;p++){
+		var m = form.elements[p];
+			if (m.checked==false){
+				m.checked = true;
+			}
+			else{
+				m.checked = false;
+			}
+	}
+}
+function checkthis(obj,nn){
+
+		if(obj.checked==true){
+					checkdan(nn,1);				
+			}else{
+					checkdan(nn,0);			
+			}
+}								
+function setAll(id,N){
+	var string = "";
+	var id=id;
+	for (var nn=0;nn<N;nn++){
+		for (var i = 1 ; i<document.forms[nn].elements.length; i++){
+			if(document.forms[nn].elements[i].checked !=""){
+				if(i<(document.forms[nn].elements.length)){
+					string = string + document.forms[nn].elements[i].value+",";
+				}else{
+					string = string + document.forms[nn].elements[i].value;
+				}
+			}
+		}
+	}
+	if(string == ""){
+		alert("请选择权限内容！");return false;
+	}else{
+		if(confirm('确认设置这些权限？')){
+		//alert(string);
+		location.href="user.php?action=do_user_add_quanxian&user_id="+id+"&list_id="+string;
+		}
+	}
+}
+	function listBgOver(obj){
+		obj.style.background="#E8F4FF";
+	}
+	function listBgOut(obj){
+		obj.style.background="#FFFFFF";
+	}
+</script>
+<body>
+<div class="main">
+  <div class="main_title"><strong>设置权限</strong><span></span>
+    <p></p>
+  </div>
+  <!--设置权限b-->
+  <div class="contents" style="display:block">
+    <div>
+	<input type="hidden" id="user_id" value="{OVOV:$id/}" />
+        <table width="100%" border="0" cellspacing="1" cellpadding="0" style="background:#d5dde0;" class="table_font">
+		{OVOV:section name=dalei loop=$channelda/}<form id="form{OVOV:$smarty.section.dalei.index/}" name="form{OVOV:$smarty.section.dalei.index/}">	
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="left" width="10%">&nbsp;<input type="checkbox" name="cid{OVOV:$smarty.section.dalei.index/}" id="cid{OVOV:$smarty.section.dalei.index/}" value="{OVOV:$channelda[dalei].channel_id/}" onClick="checkthis(this,{OVOV:$smarty.section.dalei.index/})" {OVOV:if $channelda[dalei].channel_id|in_array:$user_cview/} checked="checked"{OVOV:/if/}/>&nbsp;{OVOV:$channelda[dalei].channel_name/}</td>
+			<td align="left" width="90%" >&nbsp;{OVOV:section name=xiaolei loop=$channelxiao/}
+            {OVOV:if $channelxiao[xiaolei].channel_root_id eq $channelda[dalei].channel_id/}
+        	<input type="checkbox" name="de_name" id="de_name" value="{OVOV:$channelda[dalei].channel_id/}-{OVOV:$channelxiao[xiaolei].channel_id/}" {OVOV:if $channelxiao[xiaolei].channel_id|in_array:$user_sview/} checked="checked"{OVOV:/if/} />&nbsp;{OVOV:$channelxiao[xiaolei].channel_name/}
+            {OVOV:/if/}
+            {OVOV:/section/}</td>
+			</tr>
+			</form>{OVOV:/section/}
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">   
+			<td height="32" align="center" width="10%">&nbsp;</td>       
+			<td align="left" width="90%" colspan="2">&nbsp;<INPUT class="but_add" type=submit value=" " name="submit" id="submit"  onClick="setAll({OVOV:$id/},{OVOV:$smarty.section.dalei.total/});">&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onClick="cc({OVOV:$smarty.section.dalei.total/},1)">全选</a>&nbsp;&nbsp;<a href="javascript:void(0)" onClick="cc({OVOV:$smarty.section.dalei.total/},0)">全不选</a>&nbsp;&nbsp;<a href="javascript:void(0)" onClick="cc({OVOV:$smarty.section.dalei.total/},2)">反选</a></td>
+			</tr>
+		  </table>
+		 
+	  </div>
+  </div>
+   <!--设置权限e-->
+</div>
+</div>
+</body>
+</html>

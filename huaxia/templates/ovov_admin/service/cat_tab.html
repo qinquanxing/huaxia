@@ -1,0 +1,20 @@
+<div class="main_title">
+		<strong>{OVOV:$appname/}</strong>
+	</div>
+	<div class="main_content">
+		<div class="sub_title">
+			<ul>
+				<li {OVOV:if $action eq 'category'/}class="tab_on"{OVOV:/if/}>
+					<a href="goods.php?action=category">
+						<span>商品分类管理</span>
+					</a>
+				</li>
+
+				<li {OVOV:if $action eq 'cat_add'/}class="tab_on"{OVOV:/if/}>
+					<a href="goods.php?action=cat_add">
+						<span>商品分类添加</span>
+					</a>
+				</li>
+
+			</ul>
+		</div>

@@ -1,0 +1,80 @@
+{OVOV:include file="ovov_sys/ovoa_header.html"/}
+<script>
+function listBgOver(obj){
+	obj.style.background="#E8F4FF";
+}
+function listBgOut(obj){
+	obj.style.background="#FFFFFF";
+}
+function ckadd(){
+	//必填项判断
+	if($("#cat_name").val()==''){
+		art.dialog({content: "分类名称不能为空",time:2,lock: true,icon:"error"});
+		return false;
+	}
+	
+	if($("#goods_des").val()==''){
+		art.dialog({content: "描述不能为空",time:2,lock: true,icon:"error"});
+		return false;
+	}
+	if($("#ovoa_logo").val()==''){
+		art.dialog({content: "推荐图不能为空",time:2,lock: true,icon:"error"});
+		return false;
+	}
+	if($("#picture").val()==''){
+		art.dialog({content: "展示图不能为空",time:2,lock: true,icon:"error"});
+		return false;
+	}
+}
+</script>
+<body>
+<div class="main">
+	
+{OVOV:include file='goods/cat_tab.html'/}
+	
+		<div class="contents" style="display:block">
+			<form action="goods.php?action=do_cat_edit&id={OVOV:$edit_info.id/}" method="post" enctype="multipart/form-data" name="article_add_form">
+        		<table width="100%" border="0" cellspacing="1" cellpadding="0" style="background:#d5dde0;" class="table_font">
+		
+					<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);"   class="article_sign">          
+						<td height="32" align="center" width="10%">&nbsp;所属分类：</td>
+						<td align="left" width="90%" >
+							&nbsp;<select name="data[parent_id]">
+									<option value="0">--顶级分类--</option>
+{OVOV:foreach from=$cat_option item=cat_option/}
+									<option value="{OVOV:$cat_option.id/}" {OVOV:if $cat_option.id eq $edit_info.parent_id/}selected{OVOV:/if/}>{OVOV:$cat_option.cat_name/}</option>
+{OVOV:/foreach/}
+								  </select>
+						</td>
+					</tr>
+			
+					<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);"   class="article_sign">          
+						<td height="32" align="center" width="10%">&nbsp;分类名称：</td>
+						<td align="left" width="90%" >
+							&nbsp;<INPUT class="u_input320" type="text" name="data[cat_name]" id="cat_name" value="{OVOV:$edit_info.cat_name/}"/>
+						</td>
+					</tr>
+					
+					<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+						<td height="32" align="center" width="10%">&nbsp;排列顺序：</td>
+			            <td align="left" width="90%" >
+			            	&nbsp;<INPUT class="u_input80" type="text" name="data[cat_sort]" id="cat_sort" value="{OVOV:$edit_info.cat_sort/}"/>
+			            </td>
+					</tr>
+					
+					<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+						<td height="32" align="center" width="10%">&nbsp;描述：</td>
+			            <td align="left" width="90%" >&nbsp;<textarea name="data[cat_desc]" style="margin:5px 0;padding:5px;width:306px;height:100px" id="cat_desc">{OVOV:$edit_info.cat_desc/}</textarea></td>
+					</tr>
+					
+					<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">   
+						<td height="32" align="center" width="10%">&nbsp;</td>       
+						<td align="left" width="90%" colspan="2">&nbsp;<INPUT class="but_modfy" onclick="return ckadd()" type="submit" value=" "  id="article_add"></td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</div>
+</div>
+</body>
+</html>

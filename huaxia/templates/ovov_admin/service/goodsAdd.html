@@ -1,0 +1,252 @@
+{OVOV:include file="ovov_sys/ovoa_header.html"/}
+
+<link rel="stylesheet" href="../e/themes/default/default.css" />
+<script charset="utf-8" src="../e/kindeditor-min.js"></script>
+<script charset="utf-8" src="../e/lang/zh_CN.js"></script>
+<script>
+	KindEditor.ready(function(K) {
+		iK = K.create('#goods_des', {
+		themeType : 'default',
+		filterMode: false,//是否开启过滤模式
+		});
+	});
+	
+	//移除所有
+	function moveOpt(eleId, f , bool){
+		var currObj = document.getElementById(eleId);
+		switch (f){
+			case 'btnAll':
+				currObj.innerHTML = '';
+			break;
+			case 'btn':
+			case 'click':
+				for(i=0;i<currObj.length;i++){
+				if(currObj.options[i].value == currObj.value){
+				if(bool){
+					listb = document.getElementById('rightBox');
+					flag = true;
+					if(listb.length){
+					for(i=0;i<listb.length;i++){
+					if(listb.options[i].value == currObj.options[currObj.selectedIndex].value){
+					flag = false;
+					break;
+					}
+					}
+					if(flag){
+					listb.options.add(new Option(currObj.options[currObj.selectedIndex].text, currObj.options[currObj.selectedIndex].value));
+					}
+					}else{
+					listb.options.add(new Option(currObj.options[currObj.selectedIndex].text, currObj.options[currObj.selectedIndex].value));
+					}
+					}else{
+					currObj.options.remove(i);
+					}
+					break;
+					}
+				}
+			break;
+			default:
+				alert('操作异常，刷新重试');
+		}
+		
+	}
+	
+	$(function(){
+		$(".sub_title li").click(function(){
+			var index = $(this).index();
+			$(".contents").eq(index).show().siblings(".contents").hide();
+		});
+		
+		$("#btn_add").click(function(){
+			if($("#goodsName").val()==''){
+				alert('商品名称不能为空！');return false;
+			}
+			
+		})
+		
+		$("#goodslink").change(function(){
+			if($(this).val()>0)
+			$.get('goods.php?action=goodslink&id='+$(this).val(),
+				function(data){
+					alert(data);
+				})
+		})
+	})
+		
+</script>
+<style>
+#leftBox option,#rightBox option{padding-top:1px;font-size:14px;}
+
+</style>
+<body>
+
+<div class="main">
+
+	<div class="main_title">
+		<a href="goods.php?cid=75&action=list"><strong>商品管理</strong></a> <strong>商品添加</strong>
+	</div>
+	
+	<div class="main_content">
+		
+		<div class="sub_title" >
+			<ul id="sub_title">
+				<li class="tab_on">
+					<span>商品信息</span>
+				</li>
+				<li>
+					<span>描述</span>
+				</li>
+				<li>
+					<span>关联</span>
+				</li>
+		    </ul>
+		</div>
+	
+	    <form action="goods.php?action=do_goods_add" name="article_add_form" id="article_add_form" method="post" enctype="multipart/form-data">
+	        
+	        <div class="contents" style="display:block;">
+	        <table width="100%" border="0" cellspacing="1" cellpadding="0" style="background:#d5dde0;" class="table_font">
+	        <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+				<td height="32" align="right" width="120px">商品分类：</td>
+				<td align="left" style="padding-left:10px;">
+					<select name="category" id="category">
+{OVOV:foreach from=$category item=cat/}
+						<option value="{OVOV:$cat.id/}">{OVOV:$cat.cat_name/}</option>
+{OVOV:/foreach/}
+					</select>
+					
+					<a href="goods.php?action=cat_add">添加分类</a>
+					
+				</td>
+			</tr>
+			
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+				<td height="32" align="right" width="120px">商品名称：</td>
+				<td align="left" style="padding-left:10px;">
+					<input type="text" maxlength="25" class="u_input320" id="goodsName"/>
+				</td>
+			</tr>
+			
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+				<td height="32" align="right" width="120px">商品副标题：</td>
+				<td align="left" style="padding-left:10px;">
+					<input type="text" maxlength="25" class="u_input320"/>
+				</td>
+			</tr>
+			
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+				<td height="32" align="right" width="120px">促销信息：</td>
+				<td align="left" style="padding-left:10px;">
+					<input type="text" maxlength="25" class="u_input320"/>
+				</td>
+			</tr>
+			
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+				<td height="32" align="right" width="120px">供货商：</td>
+				<td align="left" style="padding-left:10px;">
+					<select>
+						<option value="0">默认为本店商品</option>
+					</select>
+				</td>
+			</tr>
+			
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+				<td height="32" align="right" width="120px">商品价格：</td>
+				<td align="left" style="padding-left:10px;">
+					<input type="text" maxlength="15" style="width:35px;"/>
+				</td>
+			</tr>
+			
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+				<td height="32" align="right" width="120px">库 存 量：</td>
+				<td align="left" style="padding-left:10px;">
+					<input type="text" maxlength="4" style="width:35px;"/>
+				</td>
+			</tr>
+			
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+				<td height="32" align="right" width="120px">是否上架：</td>
+				<td align="left" style="padding-left:10px;">
+					<label><input type="radio" name="shelves" value="1" checked/> 是</label>
+					<label style="margin-left:10px;"><input type="radio" name="shelves" value="0"/> 否 </label>
+					<span class="xspan">* 只有上架的商品才会在前台显示出来，客户是无法看到下架商品</span>
+				</td>
+			</tr>
+			
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+				<td height="32" align="right" width="120px">是否置顶：</td>
+				<td align="left" style="padding-left:10px;">
+					<label><input type="radio" name="istop" value="1"/> 是</label>
+					<label style="margin-left:10px;"><input type="radio" name="istop" value="0" checked/> 否 </label>
+					<span class="xspan">* 置顶商品将会显示在产品列表最顶部</span>
+				</td>
+			</tr>
+			</table>
+			</div>
+			
+			<div class="contents">
+	        <table width="100%" border="0" cellspacing="1" cellpadding="0" style="background:#d5dde0;" class="table_font">
+	        <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+				<td height="32" align="right" width="120px">商品描述：</td>
+				<td align="left" style="padding:10px;">
+					<textarea name="data[goods_des]" style="margin:5px 0;padding:5px;width:700px;height:350px" id="goods_des"></textarea>
+				</td>
+			</tr>
+			</table>
+			</div>
+			
+			<div class="contents">
+			<div>
+				商品分类  <select id="goodslink">
+						<option value="0"> 请选择 </option>
+{OVOV:foreach from=$cat2search item=cat/}
+						<option value="{OVOV:$cat.id/}">{OVOV:$cat.cat_name/}</option>
+{OVOV:/foreach/}
+					  </select>
+			</div>
+	        <table width="100%" border="0" cellspacing="1" cellpadding="0" style="background:#d5dde0;" class="table_font">
+	        <tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+				<td height="32" align="right" width="120px">商品关联：</td>
+				
+				<td align="center" width="40%">
+					<select size="20" ondblclick="moveOpt('leftBox', 'click', 'true')" style="width:200px;height:282px;" id="leftBox">
+						
+					</select>
+				</td>
+				
+				<td align="center" width="10%">
+					<div>
+						<p><input type="button" value=">" onclick="moveOpt('leftBox', 'btn', 'true')"/></p>
+						<br/>
+						<p><input type="button" value="<" onclick="moveOpt('rightBox','btn')"/></p>
+						<br/>
+						<p><input type="button" value="<<" onclick="moveOpt('rightBox','btnAll')"/></p>
+					</div>
+				</td>
+				
+				<td align="center" width="40%">
+					<select size="20" ondblclick="moveOpt('rightBox','click')" style="width:200px;height:282px;" multiple="multiple" id="rightBox">
+						
+					</select>
+				</td>
+				
+			</tr>
+			</table>
+			</div>
+			
+			<table width="100%" border="0" cellspacing="1" cellpadding="0" style="" class="table_font">
+			<tr bgcolor="">   
+				<td height="32" align="center" width="10%">&nbsp;</td>       
+				<td align="left" width="90%" colspan="2">&nbsp;<INPUT class="but_add" type=submit value=" "  id="btn_add"></td>
+			</tr>
+			</table>
+			
+		</form>
+		
+	</div>
+
+</div>
+
+</body>
+
+</html>

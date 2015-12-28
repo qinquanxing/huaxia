@@ -1,0 +1,161 @@
+{OVOV:include file="ovov_sys/ovoa_header.html"/}
+<script language="javascript" type="text/javascript" src="common/rili/WdatePicker.js"></script>
+<script language="javascript" type="text/javascript">
+	function listBgOver(obj){
+		obj.style.background="#E8F4FF";
+	}
+	function listBgOut(obj){
+		obj.style.background="#FFFFFF";
+	}
+	jQuery(function($) {
+		//标题不能为空
+		$("#user_name").focus();
+		$("#user_name").blur(function() {
+			aa();
+		});
+		//提交
+		$("#submit").click(function() {
+				if(aa()==false) {
+					//alert("用户登录名不能为空！");
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '用户登录名不能为空'
+               		});
+					return false;
+				}
+				//考勤号码是否为空
+				if($("#kqid").val()==''){
+					$("#kqid").focus();
+					$("#kqid").attr("style","border:#F00 solid 1px;");
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '考勤号码不能为空'
+               		});
+					return false;
+				}
+
+				//真实姓名不能为空
+				if($("#user_ture_name").val()==''){
+					$("#user_ture_name").focus();
+					$("#user_ture_name").attr("style","border:#F00 solid 1px;");
+					//alert("真实姓名不能为空");
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '真实姓名不能为空'
+               		});
+					return false;
+				}
+				//职位名称不能为空
+					if($("#user_position").val()==''){
+					$("#user_position").focus();
+					$("#user_position").attr("style","border:#F00 solid 1px;");
+					//alert("职位名称不能为空");
+					art.dialog({
+                    time: 2,
+                    lock: true,
+                    icon: 'error',
+                    content: '职位名称不能为空'
+               		});
+
+					return false;
+				}
+
+			});
+		});
+function aa(){
+			if($("#user_name").val()==''){
+				$("#user_name").attr("style","border:#F00 solid 1px;");
+				//alert("用户名不能为空");
+				return false;
+			}else{
+				$("#user_name").attr("style","");
+				return true;
+			}	
+	
+}
+
+</script>
+<body>
+<div class="main">
+  <div class="main_title"><a href="user.php"><strong>用户管理</strong></a> <strong>修改用户资料</strong><span></span>
+    <p></p>
+  </div>
+  <div class="main_content">
+  <!--添加用户b-->
+  <div class="contents" style="display:block">
+    <div><form action="user.php?action=do_set_user&id={OVOV:$user.user_id/}" name="user_modify" id="user_modify" method="post" enctype="multipart/form-data">
+        <table width="100%" border="0" cellspacing="1" cellpadding="0" style="background:#d5dde0;" class="table_font">
+          <tr style="background:url(common/skin/1/images/table_title.gif) repeat-x;">
+            <td align="center" colspan="2" height="32">&nbsp;修改用户&nbsp;&nbsp;<INPUT class="but_modfy" type=submit value=" " name="submit" id="submit"></td>
+          </tr>
+ 			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+		   <td height="32" align="center" width="10%">&nbsp;用 户 名：</td>
+            <td align="left" width="90%" >&nbsp;<input type="hidden" name="url_from" id="url_from" value="{OVOV:$url_from/}"><INPUT class="s_sear" type=text name="user_name" id="user_name" value="{OVOV:$user.user_name/}" {OVOV:if $qx_id>1 /}readonly{OVOV:/if/} >&nbsp;<span class="xspan">*系统登录的用户名</span></td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;用户密码：</td>
+			<td align="left" width="90%" >&nbsp;<INPUT class="s_sear"  type="password" name="user_password1" id="user_password1">&nbsp;<span class="xspan">*系统登录的密码</span></td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;确认密码：</td>
+			<td align="left" width="90%" >&nbsp;<INPUT class="s_sear"  type="password" name="user_password2"id="user_password2">&nbsp;<span class="xspan">*再次输入密码</span></td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;真实姓名：</td>
+			<td align="left" width="90%" >&nbsp;<INPUT class="s_sear" type=text name="user_ture_name" id="user_ture_name" value="{OVOV:$user.user_ture_name/}" >&nbsp;<span class="xspan">*真实姓名不能为空</span></td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;用户权限：</td>
+			<td align="left" width="90%" >&nbsp;<select id="user_quanxian" name="user_quanxian" >
+										{OVOV:foreach from=$quanxian item=quanxian/}
+										<option value="{OVOV:$quanxian.qx_id/}" {OVOV:if $user.user_quanxian eq $quanxian.qx_id/}selected{OVOV:/if/} >{OVOV:$quanxian.qx_name/}</option>
+										{OVOV:/foreach/}
+										</select>&nbsp;<span class="xspan">*用户的使用权限</span></td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;所在部门：</td>
+			<td align="left" width="90%" >&nbsp;<select id="user_right" name="user_right" >
+										{OVOV:foreach from=$department item=department/}
+										<option value="{OVOV:$department.de_id/}" {OVOV:if $user.user_right eq $department.de_id/}selected{OVOV:/if/}>{OVOV:$department.de_name/}</option>
+										{OVOV:/foreach/}
+										</select>&nbsp;<span class="xspan">*所在部门</span></td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;性　　别：</td>
+			<td align="left" width="90%" >&nbsp;<label><input name="user_sex" type="radio" id="user_sex" value="男" {OVOV:if $user.user_sex eq '男'/}checked{OVOV:/if/}> 男</label><label><input type="radio" name="user_sex" id="user_sex" value="女" {OVOV:if $user.user_sex eq '女'/}checked{OVOV:/if/}> 女</label>&nbsp;</td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;联系手机：</td>
+			<td align="left" width="90%" >&nbsp;<INPUT class="s_sear" type=text name="user_phone" id="user_phone" value="{OVOV:$user.user_phone/}"></td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;常 用 QQ：</td>
+			<td align="left" width="90%" >&nbsp;<INPUT class="s_sear" type=text name="user_qq" id="user_qq" value="{OVOV:$user.user_qq/}"></td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="32" align="center" width="10%">&nbsp;常用邮箱：</td>
+			<td align="left" width="90%" >&nbsp;<INPUT class="s_sear" type=text name="user_email" id="user_email" value="{OVOV:$user.user_email/}"></td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+			<td height="150" align="center" width="10%">&nbsp;用户备注：</td>
+			<td align="left" width="90%" >&nbsp;<textarea class="texaare" name="user_remarks" id="user_remarks">{OVOV:$user.user_remarks/}</textarea></td>
+			</tr>
+			<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">   
+			<td height="32" align="center" width="10%">&nbsp;</td>       
+			<td align="left" width="90%" colspan="2">&nbsp;<INPUT class="but_modfy" type=submit value=" " name="submit" id="submit"></td>
+			</tr>
+		  </table>
+		  </form>
+	  </div>
+  </div>
+   <!--添加用户e-->
+</div>
+</div>
+</body>
+</html>

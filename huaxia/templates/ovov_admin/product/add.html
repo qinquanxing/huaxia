@@ -1,0 +1,96 @@
+{OVOV:include file="ovov_sys/ovoa_header.html"/}
+<script>
+function listBgOver(obj){
+	obj.style.background="#E8F4FF";
+}
+function listBgOut(obj){
+	obj.style.background="#FFFFFF";
+}
+</script>
+<body>
+<div class="main">
+	<div class="main_title">
+		<strong>产品管理</strong><strong>添加</strong>
+	</div>
+	<div class="main_content">
+		<div class="contents" style="display:block">
+			<form action="product.php?action=do_add" method="post" enctype="multipart/form-data" name="article_add_form">
+        		<table width="100%" border="0" cellspacing="1" cellpadding="0" style="background:#d5dde0;" class="table_font">
+		
+					<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);"   class="article_sign">          
+						<td height="32" align="center" width="10%">&nbsp;产品分类：</td>
+						<td align="left" width="90%" >&nbsp;
+							<select name="data[p_catgory]">
+{OVOV:foreach from=$pro_cat item=pro_cat/}
+								<option value="{OVOV:$pro_cat.channel_id/}">{OVOV:$pro_cat.channel_name/}</option>
+{OVOV:/foreach/}
+							</select>
+						</td>
+					</tr>
+					
+					<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);"   class="article_sign">          
+						<td height="32" align="center" width="10%">&nbsp;产品名称（中文）：</td>
+						<td align="left" width="90%" >&nbsp;<INPUT class="u_input320" type="text" name="data[p_name_ch]"/></td>
+					</tr>
+		
+					<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);"   class="article_sign">          
+						<td height="32" align="center" width="10%">&nbsp;产品名称（英文）：</td>
+						<td align="left" width="90%" >&nbsp;<INPUT class="u_input320" type="text" name="data[p_name_en]"/></td>
+					</tr>
+
+					<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);"   class="article_sign">          
+						<td height="32" align="center" width="10%">&nbsp;生产单位（中文）：</td>
+						<td align="left" width="90%" >&nbsp;<INPUT class="u_input320" type="text" name="data[p_company_ch]"/></td>
+					</tr>
+			
+					<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);"   class="article_sign">          
+						<td height="32" align="center" width="10%">&nbsp;生产单位（英文）：</td>
+						<td align="left" width="90%" >&nbsp;<INPUT class="u_input320" type="text" name="data[p_company_en]"/></td>
+					</tr>
+					
+					<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);"   class="article_sign">          
+						<td height="32" align="center" width="10%">&nbsp;标准（中文）：</td>
+						<td align="left" width="90%" >
+							&nbsp;<textarea class="textarea" name="data[p_para_ch]"></textarea>
+						</td>
+					</tr>
+					
+					<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);"   class="article_sign">          
+						<td height="32" align="center" width="10%">&nbsp;标准（英文）：</td>
+						<td align="left" width="90%" >
+							&nbsp;<textarea class="textarea" name="data[p_para_en]"></textarea>
+						</td>
+					</tr>					
+					
+					<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" class="skip_link">
+					  <td height="32" align="center" width="10%">&nbsp;显示顺序：</td>
+					  <td align="left" width="90%" >&nbsp;<INPUT class="u_input320" type="text" name="data[paixu]"/></td>
+				    </tr>
+			
+					<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">          
+					  <td height="32" align="center" width="10%" class='top_pic'>&nbsp;产品图上传：</td>
+					  <td align="left" width="90%" >
+					  	<table>
+					  		<tr>
+					  			<td>
+								  &nbsp;<INPUT type="text" id="img_add" name="data[p_pic]" class="u_input320" />
+								</td>
+								<td>
+								  <iframe name="file_upload" src="upload.php?action=new_ovoafile&isReturn=true&dizhi=img_add&rstform=article_add_form" scrolling="no" frameborder="0" id="upload_file_iframe" style="height:32px; padding-left:0px;"></iframe>
+								</td>
+					  		</tr>
+					  	</table>
+					  </td>
+				    </tr>
+
+					<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">   
+						<td height="32" align="center" width="10%">&nbsp;</td>       
+						<td align="left" width="90%" colspan="2">&nbsp;<INPUT class="but_add" type="submit" value=" "  id="article_add"></td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,178 @@
+{OVOV:include file="ovov_sys/ovoa_header.html"/}
+<script language="javascript" type="text/javascript" src="common/rili/WdatePicker.js"></script>
+<script language="javascript" type="text/javascript">
+	function listBgOver(obj){
+		obj.style.background="#E8F4FF";
+	}
+	function listBgOut(obj){
+		obj.style.background="#FFFFFF";
+	}
+
+
+/****************排序***************/
+	function set(mode,action,id,or_value){
+	art.dialog.prompt("请输入以下数字：\n其中‘1’代表‘是’，‘0’代表‘否’", function(data){
+    // data 代表输入数据;
+	if(data != "" && data){
+	art.dialog.confirm('确认做此操作？', function(){
+		art.dialog.open("set.php?mode="+mode+"&action="+action+"&id="+id+"&value="+data,{title: '确认做此操作',width: '0px',height:'0px',time:2});
+		}, function(){
+		art.dialog.tips('你取消了操作');
+	});
+	}
+    }, or_value);
+	}
+	/****************设置推荐、锁定、指定***************/
+	function noset(mode,action,id,or_value){ 
+      window.location.href="set.php?mode="+mode+"&action="+action+"&id="+id+"&value="+or_value;
+	 }
+	 
+	function checkAll(form){
+		for (var p=0;p<form.elements.length;p++){
+		var m = form.elements[p];
+			if (m.checked==false){
+				m.checked = true;
+			}
+			else{
+				m.checked = false;
+			}
+	}
+}
+	function delAll(action,article_root_id,guanjianzi,leibie,article_channel){
+		var string = "";
+		for (var i = 0 ; i<document.forms[1].elements.length-3 ; i++){
+			if(document.forms[1].elements[i].checked !=""){
+				if(i<(document.forms[1].elements.length - 4)){
+					string = string + document.forms[1].elements[i].value+",";
+				}else{
+					string = string + document.forms[1].elements[i].value;
+				}
+			}
+		}
+		if(string == ""){
+			art.dialog.alert('请选择文章');
+		}else{
+		art.dialog({
+			content: '确认删除这些文章？',lock:true,
+			ok: function () {
+				location.href="article.php?action=article_del&article_id="+string+"&actionx="+action+"&article_root_id="+article_root_id+"&guanjianzi="+guanjianzi+"&leibie="+leibie+"&article_channel="+article_channel;
+		},
+		cancelVal: '关闭',
+		cancel: true //为true等价于function(){}
+
+		});
+	}
+	}
+	
+	function del(id,action,article_root_id,guanjianzi,leibie,article_channel){
+			art.dialog({
+			content: '确定删除此文章？',lock:true,
+			ok: function () {
+				location.href = 'article.php?action=article_del&article_id='+id+"&actionx="+action+"&article_root_id="+article_root_id+"&guanjianzi="+guanjianzi+"&leibie="+leibie+"&article_channel="+article_channel;
+		},
+		cancelVal: '关闭',
+		cancel: true //为true等价于function(){}
+		});
+		
+	}
+	
+	function ZhuanyiAll(action,article_root_id,guanjianzi,leibie,article_channel){
+		var string = "";
+		for (var i = 0 ; i<document.forms[1].elements.length-3 ; i++){
+			if(document.forms[1].elements[i].checked !=""){
+				if(i<(document.forms[1].elements.length - 4)){
+					string = string + document.forms[1].elements[i].value+",";
+				}else{
+					string = string + document.forms[1].elements[i].value;
+				}
+			}
+		}
+		if(string == ""){
+			art.dialog.alert('请选择文章');
+		}else{
+			
+			art.dialog({
+			content: '确认转移这些文章？',lock:true,
+			ok: function () {
+			art.dialog.open('article.php?action=article_zhuanyi&article_id='+string,{title: '确认转移这些文章?',width: '50%',height:'210px'});
+		},
+		cancelVal: '关闭',
+		cancel: true //为true等价于function(){}
+		});
+		}
+	}
+function paixu(mode,action,id,or_value){
+	var setvalue=prompt("请输入数字",or_value);
+	if(setvalue != "" && setvalue){
+		if(confirm("确认做此操作?")){
+			window.location.href="set.php?mode="+mode+"&action="+action+"&id="+id+"&value="+setvalue;
+		}
+	}
+}	
+</script>
+<body>
+<div class="main">
+  <div class="main_title"><a href="article.php?cid=9&action=article_view"><strong>文章管理</strong></a> <span></span>
+    <p></p>
+  </div>
+  <div class="main_content">
+  <!--文章管理b-->
+  <div class="contents" style="display:block">
+    <div>
+    <form method="get" action="article.php?action=chaxun" name="zhannei">
+    <input type="hidden" value="article_chaxun" name="action" />
+    <input type="radio" value="1" name="leibie" {OVOV:if $leibie eq 1/}checked{OVOV:/if/}>&nbsp;ID &nbsp;
+    <input type="radio" value="2" name="leibie" {OVOV:if $leibie eq 2/}checked{OVOV:/if/}>&nbsp;文章标题&nbsp;
+    <input type="radio" value="3" name="leibie" {OVOV:if $leibie eq 3/}checked{OVOV:/if/}>&nbsp;作者&nbsp;
+    <input type="text" name="guanjianzi" size="40" value="{OVOV:$guanjianzi/}">
+    <span id="article_channel_div">{OVOV:$channel_list/}</span><span id="article_sort_div"><font color="#FF0000">{OVOV:if $xialeilist eq ""/}请选择频道！{OVOV:else/}{OVOV:$xialeilist/}{OVOV:/if/}</font></span>
+    <input type="submit" value=" 搜 索 " name="sqlkeywrod" class="button">
+    </form> </div>	
+    <div><form name="channel_form"><table width="100%" border="0" cellspacing="1" cellpadding="0" style="background:#d5dde0;" class="table_font">
+  	<tr bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);" align="center">
+    <td height="32" align="center">选择</td>
+    <td>ID</td>
+    <td>标题</td>
+    <td>所属情况/(频道-&gt;分类)</td>
+	<td>时间</td>
+    <td>添加人</td>
+    <td>顺序</td>
+    <td width="10%">状态</td>
+    <td>操作&nbsp;&nbsp;&nbsp;&nbsp; <a href="article.php?action=article_add">添加文章</a></td>
+  </tr>{OVOV:foreach from=$article item=article/}
+  <tr height="32" align="center" bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+    <td><input type="checkbox" name="article" value="{OVOV:$article.article_id/}" /></td>
+    <td align=center>{OVOV:$article.article_id/}</td>
+    <td><a href="article.php?action=article_edit&article_id={OVOV:$article.article_id/}&actionx={OVOV:$action/}&article_root_id={OVOV:$article_root_id/}&guanjianzi={OVOV:$guanjianzi/}&leibie={OVOV:$leibie/}&article_channel={OVOV:$article_channel/}" title='{OVOV:$article.article_title/}'>{OVOV:$article.article_title|smartTruncate:"30":"..."/}</a></td>
+    <td><a href="article.php?action=article_view&channel_id={OVOV:$article.article_cid/}">{OVOV:$article.article_channel_name/}</a>-><a href="article.php?action=article_view&channel_id={OVOV:$article.article_cid/}&sort_id={OVOV:$article.article_sid/}">{OVOV:$article.article_sort_name/}</a></td>
+    <td>{OVOV:$article.add_time|date_format:'%Y-%m-%d %H:%I:%S'/}</td>
+	<td>{OVOV:$article.article_add_user/}</td>
+    <td>{OVOV:$article.paixu/}</td>
+    <td>{OVOV:$article.article_situation/}</td>
+    <td>
+    
+
+<a href="#" onClick="paixu('article','paixu','{OVOV:$article.article_id/}','{OVOV:$article.paixu/}');">排序</a>
+  <a href="#" onClick="noset('article','top','{OVOV:$article.article_id/}',{OVOV:if $article.is_top eq 1/}0{OVOV:else/}1{OVOV:/if/});">{OVOV:if $article.is_top eq 1/}撤销{OVOV:/if/}顶置</a>
+
+  <a href="#" onClick="noset('article','lock','{OVOV:$article.article_id/}',{OVOV:if $article.is_locked eq 1/}0{OVOV:else/}1{OVOV:/if/});">{OVOV:if $article.is_locked eq 1/}撤销{OVOV:/if/}锁定</a>&nbsp;
+  <a href="article.php?action=article_edit&article_id={OVOV:$article.article_id/}&actionx={OVOV:$action/}&article_root_id={OVOV:$article_root_id/}&guanjianzi={OVOV:$guanjianzi/}&leibie={OVOV:$leibie/}&article_channel={OVOV:$article_channel/}">修改</a>&nbsp;
+  <a href="#" onClick="del('{OVOV:$article.article_id/}','{OVOV:$action/}','{OVOV:$article_root_id/}','{OVOV:$guanjianzi/}','{OVOV:$leibie/}','{OVOV:$article_channel/}');">删除</a>
+    </td>
+  </tr>{OVOV:/foreach/}
+  <tr height="32" align="center" bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+    <td colspan="9"><input name="Submit" type="button" class="button" onClick="checkAll(this.form);" value="  全 选  " />
+    &nbsp; <input name="delall" type="button" class="button" id="delall" onClick="delAll('{OVOV:$action/}','{OVOV:$article_root_id/}','{OVOV:$guanjianzi/}','{OVOV:$leibie/}','{OVOV:$article_channel/}');" value="  删 除 所 选  " />&nbsp; </td>
+  </tr>
+  <tr height="32" align="center" bgcolor="#FFFFFF" onMouseOver="listBgOver(this);" onMouseOut="listBgOut(this);">
+    <td colspan="9">{OVOV:$pagelist/}&nbsp;共{OVOV:$total/}记录{OVOV:$page_num/}页 当前第{OVOV:$page_now/}页<!--<a href="{OVOV:$page_frist/}">首页</a>&nbsp;<a href="{OVOV:$page_last/}">下一页</a>&nbsp; <a href="{OVOV:$page_pre/}">上一页</a>&nbsp;<a href="{OVOV:$page_final/}">尾页</a> 共{OVOV:$list_num/}记录{OVOV:$page_num/}页 当前第{OVOV:$page_now/}页--></td>
+  </tr>
+</table>
+</form>
+</div>
+</div>
+   <!--文章管理e-->
+</div>
+</div>
+</body>
+</html>
